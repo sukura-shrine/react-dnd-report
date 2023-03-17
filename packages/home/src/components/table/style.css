@@ -1,0 +1,34 @@
+.componse-img {
+  
+}
+.componse-img img {
+    width: 100%;
+    height: 100%;
+}
+
+.component-ruler {
+    display: flex;
+    grid-auto-columns: min-content;
+}
+.ruler-item {
+    background-color: #ddd;
+    border: 1px solid #666;
+    height: 20px;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr min-content;
+}
+.drag-handler-wrap {
+    width: 1px;
+    position: relative;
+    z-index: 1;
+}
+.drag-handler {
+    width: 2px;
+    height: 100%;
+    background-color: red;
+    position: relative;
+    left: 0;
+    transform: translate(-50%, 0);
+    cursor: col-resize;
+}

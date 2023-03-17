@@ -42,3 +42,11 @@ export interface TextProps {
   onChange?: () => void
   onClick?: () => void
 }
+
+export interface TableHeaderProps {
+  
+}
+
+export interface RulerProps {
+  vertical?: boolean
+}

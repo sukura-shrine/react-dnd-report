@@ -1,0 +1,5 @@
+.tools {
+  display: grid;
+  width: 80px;
+  grid-auto-rows: 80px;
+}

@@ -4,6 +4,8 @@ import { Layout, Menu, theme } from 'antd'
 
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+// @ts-ignore
+
 import Tools from './tools'
 import DropCanvas from './drop-canvas'
 
