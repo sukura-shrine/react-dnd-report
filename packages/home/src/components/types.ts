@@ -43,6 +43,10 @@ export interface TextProps {
   onClick?: () => void
 }
 
+export interface TableBodyProps {
+  
+}
+
 export interface TableHeaderProps {
   
 }

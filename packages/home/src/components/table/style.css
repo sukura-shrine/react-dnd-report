@@ -32,3 +32,14 @@
     transform: translate(-50%, 0);
     cursor: col-resize;
 }
+.component-table-body {
+    display: grid;
+    grid-auto-rows: 40px;
+    grid-template-columns: 10;
+}
+.table-body-grid {
+    background-color: #eee;
+}
+.grid-selected {
+    background-color: #a3d8fb;
+}

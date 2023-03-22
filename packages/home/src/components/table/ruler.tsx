@@ -4,12 +4,9 @@ import { RulerProps } from '@/components/types'
 import { RulerContext } from './context'
 
 export const DragHandler: React.FC<{ loc: any, width: number }> = ({ loc, width }) => {
-  // const { tableWidth } = useContext(RulerContext)
-  
   const ref = useRef<HTMLDivElement>(null)
   
   const [{ isDragging }, drag] = useDrag(() => {
-    console.log('---', ref)
     return {
       type: 'table-handler',
       item: { loc, rulerItem: ref },
@@ -45,7 +42,6 @@ const Ruler: React.FC = (props: RulerProps) => {
   })
 
   useEffect(() => {
-    console.log('----', loc, width)
     dispatch({
       type: 'updateColumn',
       payload: {
@@ -55,7 +51,6 @@ const Ruler: React.FC = (props: RulerProps) => {
   }, [loc, width])
 
   const children = useMemo(() => {
-    console.log(state.rulerColumns[0])
     return state.rulerColumns.map(({ loc, width }, i) => {
       return <DragHandler key={i} loc={loc} width={width} />
     })

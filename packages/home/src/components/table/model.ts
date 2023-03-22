@@ -12,15 +12,20 @@ interface RulerRows {
 
 export interface ModelState {
   error?: 'string'
-  length: number
+  columnLength: number
+  rowLength: number
   tableWidth: number
   tableHeight: number
   rulerColumns: RulerColum[]
   rulerRows: RulerRows[]
+  selectedGrids: { 
+    startX: number, startY: number, endX: number, endY: number
+  } | null,
+  selectedState: 'selected' | 'unSelected'
 }
 
 export interface Action {
-  type: string, payload: any
+  type: string, payload?: any
 }
 
 export interface ModelReducer {
@@ -28,22 +33,25 @@ export interface ModelReducer {
 }
 
 export const initState: ModelState = {
-  length: 3,
+  columnLength: 3,
+  rowLength: 4,
   tableWidth: 500,
   tableHeight: 300,
   rulerColumns: [],
   rulerRows: [],
+  selectedGrids: null,
+  selectedState: 'unSelected',
 }
 
 const reducer: ModelReducer = {
   init () {
     return { ...initState }
   },
-  createColumns (state, payload: { length: number }) {
-    const { tableWidth } = state;
+  createColumns (state) {
+    const { columnLength, tableWidth } = state;
     const rulerColumns = []
-    for (let i = 0; i < payload.length; i++) {
-      rulerColumns.push({ loc: i + 1, width: tableWidth / payload.length })
+    for (let i = 0; i < columnLength; i++) {
+      rulerColumns.push({ loc: i + 1, width: tableWidth / columnLength })
     }
     return { ...state, rulerColumns }
   },
@@ -56,6 +64,22 @@ const reducer: ModelReducer = {
     }
     return state
   },
+  selectGrid (state, payload: { index: string }) {
+    let { selectedGrids, selectedState } = state
+    const index = payload.index
+    const [x, y] = index.split(',').map(v => Number(v))
+    
+    console.log(selectedGrids, selectedState)
+    if (!selectedGrids || selectedState === 'unSelected') {
+      return { ...state, selectedGrids: { startX: x, startY: y, endX: x, endY: y }, selectedState: 'selected' }
+    }
+
+    selectedGrids = { ...selectedGrids, endX: x, endY: y }
+    return { ...state, selectedGrids, selectedState: 'selected' }
+  },
+  unSelect (state) {
+    return { ...state, selectedState: 'unSelected' }
+  }
 }
 
 export default {
