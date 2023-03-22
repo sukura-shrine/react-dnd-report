@@ -54,3 +54,7 @@ export interface TableHeaderProps {
 export interface RulerProps {
   vertical?: boolean
 }
+
+export interface EditInputProps {
+
+}
