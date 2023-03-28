@@ -11,13 +11,14 @@ const Table:React.FC<TextProps> = (props: TextProps) => {
   const [state, dispatch] = useReducer(model.reducer, model.state)
 
   useEffect(() => {
-    dispatch({ type: 'createColumns', payload: {} })
+    dispatch({ type: 'createGrid' })
   }, [])
   return (
     <RulerContext.Provider value={{ state, dispatch }}>
       <div className='component-table' >
-        <Ruler />
-        <Body />
+        <Ruler>
+          <Body />
+        </Ruler>
       </div>
     </RulerContext.Provider>
   )

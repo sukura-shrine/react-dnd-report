@@ -21,7 +21,6 @@ export default function DropCanvas (props: any) {
       accept: ['text', 'image', 'table'],
       drop: (item, monitor) => {
         const type = monitor.getItemType() as MapType
-        console.log(type)
         if (type) {
           const Component = componentTypeMap[type]
           setList([...list, <Component key={list.length} />])

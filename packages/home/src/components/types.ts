@@ -1,3 +1,5 @@
+import React from "react"
+
 export interface BoxData {
   width: number
   height: number
@@ -53,6 +55,7 @@ export interface TableHeaderProps {
 
 export interface RulerProps {
   vertical?: boolean
+  children?: React.ReactNode
 }
 
 export interface EditInputProps {

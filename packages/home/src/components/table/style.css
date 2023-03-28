@@ -6,36 +6,73 @@
     height: 100%;
 }
 
+.component-table {
+    --gap: 1px;
+}
 .component-ruler {
+    display: grid;
+    grid-template-areas:
+        'handle top'
+        'left content';
+    grid-template-columns: 10px 1fr;
+    grid-template-rows: 10px 1fr;
+}
+.ruler-handle {
+    grid-area: handle;
+}
+.ruler-top {
+    grid-area: top;
     display: flex;
-    grid-auto-columns: min-content;
+    flex-direction: 0;
+    gap: var(--gap);
+    margin-bottom: 1px;
+}
+.ruler-left {
+    grid-area: left;
+    display: grid;
+    gap: var(--gap);
+    margin-right: 1px;
+}
+.ruler-content {
+    grid-area: content;
 }
 .ruler-item {
     background-color: #ddd;
-    border: 1px solid #666;
-    height: 20px;
     position: relative;
+    height: 100%;
+}
+.ruler-top .ruler-item {
     display: grid;
     grid-template-columns: 1fr min-content;
 }
-.drag-handler-wrap {
+.ruler-left .ruler-item {
+    display: grid;
+    grid-template-rows: 1fr min-content;
+}
+.horizontal-drag-handler-wrap {
     width: 1px;
     position: relative;
     z-index: 1;
 }
-.drag-handler {
+.vertical-drag-handler-wrap {
+    position: relative;
+    z-index: 1;
+}
+.horizontal-drag-handler-wrap .drag-handler {
     width: 2px;
     height: 100%;
-    background-color: red;
     position: relative;
-    left: 0;
-    transform: translate(-50%, 0);
     cursor: col-resize;
+}
+.vertical-drag-handler-wrap .drag-handler {
+    height: 2px;
+    width: 100%;
+    position: relative;
+    cursor: row-resize;
 }
 .component-table-body {
     display: grid;
-    grid-auto-rows: 40px;
-    grid-template-columns: 10;
+    gap: var(--gap);
 }
 .table-body-grid {
     background-color: #eee;

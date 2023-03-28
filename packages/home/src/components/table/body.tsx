@@ -3,15 +3,28 @@ import { fromEvent, map, switchMap, takeUntil, distinctUntilChanged } from 'rxjs
 import classNames from 'classNames'
 import { TableBodyProps } from '@/components/types'
 import { RulerContext } from './context'
+
+import EditInput from '../edit-input'
 import './style.css'
 
 const Body:React.FC<TableBodyProps> = (props: TableBodyProps) => {
   const { state, dispatch } = useContext(RulerContext)
-  const { rowLength, columnLength, rulerColumns, selectedGrids } = state
+  const { rowLength, columnLength, rulerColumns, rulerRows, selectedGrids } = state
 
   const tBody = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    const findNodeIndex = (node: HTMLElement | null): string | null => {
+      if (!node || node === tBody.current) {
+        return null
+      }
+      const dataIndex = node.getAttribute('data-index')
+      if (dataIndex === null) {
+        return findNodeIndex(node.parentElement)
+      }
+      return dataIndex
+    }
+
     if (tBody.current) {
       const mousemove = fromEvent(tBody.current, 'mousemove')
       const mouseup = fromEvent(tBody.current, 'mouseup')
@@ -20,7 +33,7 @@ const Body:React.FC<TableBodyProps> = (props: TableBodyProps) => {
         .pipe(
           switchMap(() => mousemove.pipe(takeUntil(mouseup))),
           // @ts-ignore
-          map((e) => e.target.getAttribute('data-index')),
+          map((e) => findNodeIndex(e.target)),
           distinctUntilChanged(),
         )
         .subscribe((value) => {
@@ -29,8 +42,9 @@ const Body:React.FC<TableBodyProps> = (props: TableBodyProps) => {
 
       mousedown
         // @ts-ignore
-        .pipe(map((e) => e.target.getAttribute('data-index')))
+        .pipe(map((e) => findNodeIndex(e.target)))
         .subscribe((value) => {
+          dispatch({ type: 'unSelect' })
           dispatch({ type: 'selectGrid', payload: { index: value } })
         })
 
@@ -62,7 +76,7 @@ const Body:React.FC<TableBodyProps> = (props: TableBodyProps) => {
         }
         grids.push(
           <div key={key} className={classNames("table-body-grid", { "grid-selected": selected })} data-index={key}>
-            {key}
+            <EditInput />
           </div>
         )
       }
@@ -72,12 +86,13 @@ const Body:React.FC<TableBodyProps> = (props: TableBodyProps) => {
  
   const styles = useMemo(() => {
     return {
-      'gridTemplateColumns':  rulerColumns.map(item => `${item.width}px`).join(' ')
+      'gridTemplateColumns':  rulerColumns.map(item => `${item.width}px`).join(' '),
+      'gridTemplateRows': rulerRows.map(item => `${item.height}px`).join(' ')
     }
-  }, [rulerColumns])
+  }, [rulerColumns, rulerRows])
   
   return (
-    <div ref={tBody} className="component-table-body" style={styles}>
+    <div ref={tBody} id="table-body" className="component-table-body" style={styles}>
       {children}
     </div>
   )

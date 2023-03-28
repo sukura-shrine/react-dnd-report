@@ -10,7 +10,7 @@ const EditInput:React.FC<EditInputProps> = (props: EditInputProps) => {
   
   useEffect(() => {
     if (ref.current) {
-      const clicks = fromEvent(document, 'click')
+      const clicks = fromEvent(ref.current, 'click')
       clicks
         .pipe(
           exhaustMap(() => clicks.pipe(takeUntil(interval(250)))),
@@ -33,7 +33,7 @@ const EditInput:React.FC<EditInputProps> = (props: EditInputProps) => {
         />
       )
     } else {
-      return value || '请输入文本'
+      return value
     }
   }, [edited, value])
 

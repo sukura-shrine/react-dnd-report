@@ -1,12 +1,16 @@
 import React from "react"
 
-interface RulerColum {
+interface RulerItem {
+  type: 'horizontal' | 'vertical'
   loc: any,
+  width?: number
+  height?: number
+}
+interface RulerColum extends RulerItem {
   width: number
 }
 
-interface RulerRows {
-  loc: any,
+interface RulerRows extends RulerItem {
   height: number
 }
 
@@ -34,7 +38,7 @@ export interface ModelReducer {
 
 export const initState: ModelState = {
   columnLength: 3,
-  rowLength: 4,
+  rowLength: 3,
   tableWidth: 500,
   tableHeight: 300,
   rulerColumns: [],
@@ -47,20 +51,35 @@ const reducer: ModelReducer = {
   init () {
     return { ...initState }
   },
-  createColumns (state) {
-    const { columnLength, tableWidth } = state;
-    const rulerColumns = []
+  createGrid (state) {
+    const { columnLength, rowLength, tableWidth } = state;
+    const rulerColumns: RulerColum[] = []
     for (let i = 0; i < columnLength; i++) {
-      rulerColumns.push({ loc: i + 1, width: tableWidth / columnLength })
+      rulerColumns.push({ type: 'horizontal', loc: i + 1, width: tableWidth / columnLength })
     }
-    return { ...state, rulerColumns }
+    const rulerRows: RulerRows[] = []
+    for (let i = 0; i < rowLength; i++) {
+      rulerRows.push({ type: 'vertical', loc: i + 1, height: 40 })
+    }
+    return { ...state, rulerColumns, rulerRows }
   },
-  updateColumn (state, payload: { loc: any, width: number }) {
+  updateColumn (state, payload: RulerItem) {
     const { rulerColumns } = state
-    const item = rulerColumns.find(item => item.loc === payload.loc)
-    if (item && payload.width) {
-      item.width = payload.width
+    const { loc, width } = payload
+    const item = rulerColumns.find(item => item.loc === loc)
+    if (item && width) {
+      item.width = width
       return { ...state, rulerColumns: [...rulerColumns] }
+    }
+    return state
+  },
+  updateRow (state, payload: RulerItem) {
+    const { rulerRows } = state
+    const { loc, height } = payload
+    const item = rulerRows.find(item => item.loc === loc)
+    if (item && height) {
+      item.height = height
+      return { ...state, rulerRows: [...rulerRows] }
     }
     return state
   },
@@ -69,7 +88,6 @@ const reducer: ModelReducer = {
     const index = payload.index
     const [x, y] = index.split(',').map(v => Number(v))
     
-    console.log(selectedGrids, selectedState)
     if (!selectedGrids || selectedState === 'unSelected') {
       return { ...state, selectedGrids: { startX: x, startY: y, endX: x, endY: y }, selectedState: 'selected' }
     }
