@@ -8,6 +8,7 @@
 
 .component-table {
     --gap: 1px;
+    box-sizing: content-box;
 }
 .component-ruler {
     display: grid;

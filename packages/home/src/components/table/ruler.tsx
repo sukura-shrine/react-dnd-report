@@ -3,7 +3,7 @@ import { useDrag, useDragLayer } from 'react-dnd'
 import { RulerProps } from '@/components/types'
 import { RulerContext } from './context'
 
-export const HorizontalDragHandler: React.FC<{ loc: any, width: number }> = ({ loc, width }) => {
+export const HorizontalDragHandler: React.FC<{ loc: any, width: number, disable?: boolean }> = ({ loc, width, disable }) => {
   const ref = useRef<HTMLDivElement>(null)
   
   const [{ isDragging }, drag] = useDrag(() => {
@@ -21,7 +21,7 @@ export const HorizontalDragHandler: React.FC<{ loc: any, width: number }> = ({ l
   return (
     <div ref={ref} className='ruler-item' style={{ width: `${width}px` }}>
       <div />
-      <div  className="horizontal-drag-handler-wrap"><div ref={drag} className='drag-handler'/></div>
+      {disable ? null : <div  className="horizontal-drag-handler-wrap"><div ref={drag} className='drag-handler'/></div>}
     </div>
   )
 }
@@ -87,7 +87,8 @@ const Ruler: React.FC<RulerProps> = (props) => {
 
   const topRuler = useMemo(() => {
     return state.rulerColumns.map(({ loc, width }, i) => {
-      return <HorizontalDragHandler key={i} loc={loc} width={width} />
+      const disable = i === state.rulerColumns.length - 1
+      return <HorizontalDragHandler key={i} loc={loc} width={width} disable={disable} />
     })
   }, [state.rulerColumns])
 

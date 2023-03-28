@@ -1,4 +1,4 @@
-import React from "react"
+import { createModel } from "@/utils/create-context"
 
 interface RulerItem {
   type: 'horizontal' | 'vertical'
@@ -14,45 +14,41 @@ interface RulerRows extends RulerItem {
   height: number
 }
 
+enum SelectedState {
+  SELECTED = 'selected',
+  UNSELECTED = 'unSelected'
+}
+
 export interface ModelState {
   error?: 'string'
   columnLength: number
   rowLength: number
   tableWidth: number
-  tableHeight: number
   rulerColumns: RulerColum[]
   rulerRows: RulerRows[]
   selectedGrids: { 
     startX: number, startY: number, endX: number, endY: number
   } | null,
-  selectedState: 'selected' | 'unSelected'
-}
-
-export interface Action {
-  type: string, payload?: any
-}
-
-export interface ModelReducer {
-  [key: string]: (state: ModelState, payload: any) => ModelState
+  selectedState: SelectedState
 }
 
 export const initState: ModelState = {
   columnLength: 3,
   rowLength: 3,
-  tableWidth: 500,
-  tableHeight: 300,
+  tableWidth: 0,
   rulerColumns: [],
   rulerRows: [],
   selectedGrids: null,
-  selectedState: 'unSelected',
+  selectedState: SelectedState.SELECTED,
 }
 
-const reducer: ModelReducer = {
-  init () {
+export default createModel(initState, {
+  init (state) {
     return { ...initState }
   },
-  createGrid (state) {
-    const { columnLength, rowLength, tableWidth } = state;
+  createGrid (state, payload: { reportWidth: number }) {
+    const { columnLength, rowLength } = state;
+    const tableWidth = payload.reportWidth - 10 - columnLength - 1
     const rulerColumns: RulerColum[] = []
     for (let i = 0; i < columnLength; i++) {
       rulerColumns.push({ type: 'horizontal', loc: i + 1, width: tableWidth / columnLength })
@@ -61,7 +57,7 @@ const reducer: ModelReducer = {
     for (let i = 0; i < rowLength; i++) {
       rulerRows.push({ type: 'vertical', loc: i + 1, height: 40 })
     }
-    return { ...state, rulerColumns, rulerRows }
+    return { ...state, rulerColumns, rulerRows, tableWidth }
   },
   updateColumn (state, payload: RulerItem) {
     const { rulerColumns } = state
@@ -88,27 +84,14 @@ const reducer: ModelReducer = {
     const index = payload.index
     const [x, y] = index.split(',').map(v => Number(v))
     
-    if (!selectedGrids || selectedState === 'unSelected') {
-      return { ...state, selectedGrids: { startX: x, startY: y, endX: x, endY: y }, selectedState: 'selected' }
+    if (!selectedGrids || selectedState === SelectedState.UNSELECTED) {
+      return { ...state, selectedGrids: { startX: x, startY: y, endX: x, endY: y }, selectedState: SelectedState.SELECTED }
     }
 
     selectedGrids = { ...selectedGrids, endX: x, endY: y }
-    return { ...state, selectedGrids, selectedState: 'selected' }
+    return { ...state, selectedGrids, selectedState: SelectedState.SELECTED }
   },
   unSelect (state) {
-    return { ...state, selectedState: 'unSelected' }
+    return { ...state, selectedState: SelectedState.UNSELECTED }
   }
-}
-
-export default {
-  state: {
-    ...initState,
-  },
-  reducer (state: ModelState, action: Action) {
-    const { type, payload } = action
-    if (reducer[type]) {
-      return reducer[type](state, payload)
-    }
-    throw new Error(`Unknow type ${type}`)
-  },
-}
+})

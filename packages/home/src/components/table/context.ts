@@ -1,8 +1,4 @@
-import React from 'react'
-import model, { ModelState, Action, initState } from './model'
-export interface ContextProps {
-  state: ModelState
-  dispatch: React.Dispatch<Action>
-}
+import { createContext } from '@/utils/create-context'
+import { ModelState, initState } from './model'
 
-export const RulerContext = React.createContext<ContextProps>({ state: initState, dispatch: () => {} })
+export const RulerContext = createContext<ModelState>(initState)
