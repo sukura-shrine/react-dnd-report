@@ -1,5 +1,20 @@
+.tools-wrap {
+  padding-right: 2px;
+  background-color: #474747;
+}
+.tools-handle {
+  height: 12px;
+  background-color: #474747;
+  border-right: 1px solid #383838;
+}
 .tools {
   display: grid;
-  width: 80px;
-  grid-auto-rows: 80px;
+  place-items: center;
+  width: 36px;
+  height: 100%;
+  grid-auto-rows: 28px;
+  gap: 2px;
+  border-top: 1px solid #383838;
+  border-right: 1px solid #383838;
+  background-color: #535353;
 }

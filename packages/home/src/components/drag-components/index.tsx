@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDrag } from 'react-dnd'
+import './style.css'
 
 export interface DragTextProps {
   children: React.ReactNode
@@ -14,7 +15,7 @@ export const DragText: React.FC<DragTextProps> = (props:DragTextProps) => {
     }
   }))
   return (
-    <div ref={drag} className="drag-text">
+    <div ref={drag} className="drag-item">
       {props.children}
     </div>
   )
@@ -33,7 +34,7 @@ export const DragImg: React.FC<DragImgProps> = (props:DragImgProps) => {
     }
   }))
   return (
-    <div ref={drag} className="drag-text">
+    <div ref={drag} className="drag-item">
       {props.children}
     </div>
   )
@@ -52,7 +53,7 @@ export const DragTable: React.FC<DragTableProps> = (props:DragTableProps) => {
     }
   }))
   return (
-    <div ref={drag} className="drag-text">
+    <div ref={drag} className="drag-item">
       {props.children}
     </div>
   )

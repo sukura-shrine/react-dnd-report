@@ -1,5 +1,19 @@
+.container-app-wrap {
+  height: 100%;
+  padding: 2px;
+  background-color: #535353;
+}
 .container-app {
   height: 100%;
+  display: grid;
+  grid-template-rows: min-content 1fr;
+  border: 1px solid #383838;
+}
+.container-app .header {
+  padding: 8px;
+  border-bottom: 1px solid #383838;
+}
+.container-app .body {
   display: grid;
   grid-template-columns: min-content 1fr;
 }

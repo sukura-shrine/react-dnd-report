@@ -1,0 +1,4 @@
+.attrs-bar {
+  display: grid;
+  grid-template-columns: 1fr max-content;
+}

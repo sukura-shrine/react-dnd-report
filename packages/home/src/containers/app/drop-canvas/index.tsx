@@ -18,7 +18,6 @@ type MapType = 'text' | 'image'
 export default function DropCanvas (props: any) {
   const { state, dispatch } = useContext(GlobalContext)
   const [list, setList] = useState<React.ReactElement[]>([])
-  const [rect, setRect] = useState<DOMRect>()
 
   const [{ isOver }, drop] = useDrop(() => {
     return {
@@ -52,10 +51,12 @@ export default function DropCanvas (props: any) {
   }, [])
 
   return (
-    <div ref={drop} id="drop-canvas" className="drop-canvas">
-      {list.map((children) => {
-        return children
-      })}
+    <div className="drop-canvas-wrap">
+      <div ref={drop} id="drop-canvas" className="drop-canvas">
+        {list.map((children) => {
+          return children
+        })}
+      </div>
     </div>
   )
 }

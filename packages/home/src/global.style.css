@@ -1,8 +1,22 @@
+* {
+  box-sizing: border-box;
+}
 html, body, #app {
   height: 100%;
   margin: 0;
   padding: 0;
+  color: #ddd;
 }
-* {
-  box-sizing: border-box;
+.report-editor-button {
+  display: inline;
+  text-align: center;
+  vertical-align: middle;
+  padding: 4px;
+  font-size: 14px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+}
+.report-editor-button:hover {
+  background-color: #383838;
+  border-color: #ddd;
 }

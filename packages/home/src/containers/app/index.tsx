@@ -7,6 +7,8 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import Tools from './tools'
 import DropCanvas from './drop-canvas'
+import ArrtsBar from './attrs-bar'
+
 import GlobalContext from '@/global-context'
 import GlobalModel from '@/global-model'
 
@@ -23,11 +25,18 @@ export default function App (props: any) {
 
   return (
     <GlobalContext.Provider value={{ state, dispatch }}>
-      <div className="container-app">
-        <DndProvider backend={HTML5Backend}>
-          <Tools />
-          <DropCanvas />
-        </DndProvider>  
+      <div className="container-app-wrap">
+        <div className="container-app">
+          <div className='header'>
+            <ArrtsBar />
+          </div>
+          <div className="body">
+            <DndProvider backend={HTML5Backend}>
+              <Tools />
+              <DropCanvas />
+            </DndProvider>  
+          </div>
+        </div>
       </div>
     </GlobalContext.Provider>
   )

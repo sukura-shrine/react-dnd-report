@@ -9,7 +9,7 @@ const Text:React.FC<TextProps> = (props: TextProps) => {
     <Resizable
       defaultSize={{
         width: 320,
-        height: 200,
+        height: 40,
       }}
     >
       <div className='componse-text' style={{ border: "1px solid", cursor: 'move' }}><EditInput /></div>

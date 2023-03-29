@@ -1,6 +1,11 @@
+.drop-canvas-wrap {
+  display: grid;
+  place-items: center;
+  background-color: #282828;
+}
 .drop-canvas {
   width: 600px;
   height: 600px;
   border: 1px solid #999;
-  margin: 10px;
+  background-color: #fff;
 }
