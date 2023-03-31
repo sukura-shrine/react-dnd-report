@@ -1,4 +1,5 @@
 import React from "react"
+import { ItemModel, FieldConfig } from '@/global-model'
 
 export interface BoxData {
   width: number
@@ -27,7 +28,9 @@ export interface DataMapConfig {
   [columnName: string]: string
 }
 export interface TextProps {
+  cid: string
   className?: string
+  model?: ItemModel
   position?: string
   flexible?: boolean
   color?: string
@@ -46,7 +49,7 @@ export interface TextProps {
 }
 
 export interface TableBodyProps {
-  
+  cid: string
 }
 
 export interface TableHeaderProps {
@@ -59,5 +62,8 @@ export interface RulerProps {
 }
 
 export interface EditInputProps {
-
+  model?: ItemModel
+  value?: string
+  fieldsConfig: FieldConfig[]
+  onChange?: (value: string) => void
 }

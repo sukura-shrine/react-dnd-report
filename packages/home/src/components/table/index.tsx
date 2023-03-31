@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useReducer } from 'react'
 import Ruler from './ruler'
-import { TextProps } from '@/components/types'
+import { TableBodyProps } from '@/components/types'
 import { RulerContext } from './context'
 import GlobalContext from '@/global-context'
 import model from './model'
@@ -8,7 +8,7 @@ import model from './model'
 import Body from './body'
 import './style.css'
 
-const Table:React.FC<TextProps> = (props: TextProps) => {
+const Table:React.FC<TableBodyProps> = (props) => {
   const context = useContext(GlobalContext)
   const [state, dispatch] = useReducer(model.reducer, model.state)
 

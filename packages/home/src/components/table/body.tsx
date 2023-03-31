@@ -3,11 +3,13 @@ import { fromEvent, map, switchMap, takeUntil, distinctUntilChanged } from 'rxjs
 import classNames from 'classNames'
 import { TableBodyProps } from '@/components/types'
 import { RulerContext } from './context'
+import GlobalContext from '@/global-context'
 
 import EditInput from '../edit-input'
 import './style.css'
 
-const Body:React.FC<TableBodyProps> = (props: TableBodyProps) => {
+const Body:React.FC = (props) => {
+  const { state: globalState } = useContext(GlobalContext)
   const { state, dispatch } = useContext(RulerContext)
   const { rowLength, columnLength, rulerColumns, rulerRows, selectedGrids } = state
 
@@ -76,7 +78,7 @@ const Body:React.FC<TableBodyProps> = (props: TableBodyProps) => {
         }
         grids.push(
           <div key={key} className={classNames("table-body-grid", { "grid-selected": selected })} data-index={key}>
-            <EditInput />
+            <EditInput fieldsConfig={globalState.fieldsConfig} />
           </div>
         )
       }

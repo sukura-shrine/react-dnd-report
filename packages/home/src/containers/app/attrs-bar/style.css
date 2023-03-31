@@ -1,4 +1,9 @@
 .attrs-bar {
   display: grid;
   grid-template-columns: 1fr max-content;
+  place-items: center start;
+  min-height: 34px;
+}
+.attrs-bar .attrs {
+  color: #fff
 }

@@ -1,12 +1,17 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react'
 import { fromEvent, exhaustMap, interval, takeUntil } from 'rxjs'
+import { Select } from 'antd'
 import { EditInputProps } from '@/components/types'
+import { ItemModel } from '@/global-model'
 import './style.css'
 
-const EditInput:React.FC<EditInputProps> = (props: EditInputProps) => {
+const { Option } = Select
+
+const EditInput:React.FC<EditInputProps> = (props) => {
+  const { value: defaultValue, model, fieldsConfig } = props
   const ref = useRef<HTMLDivElement>(null)
   const [edited, setEdited] = useState(false)
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState(defaultValue)
   
   useEffect(() => {
     if (ref.current) {
@@ -21,21 +26,40 @@ const EditInput:React.FC<EditInputProps> = (props: EditInputProps) => {
     }
   }, [ref])
 
+  useEffect(() => {})
+
+  const onChange = () => {
+    setEdited(false)
+    props.onChange && props.onChange(value as string)
+  }
+  const onSelectChange = (value: string) => {
+    setValue(value)
+    onChange()
+  }
+
   const children = useMemo(() => {
-    if (edited) {
-      return (
-        <textarea
-          className="text-input"
-          autoFocus
-          value={value}
-          onChange={e => setValue(e.target.value)}
-          onBlur={() => setEdited(false)}
-        />
-      )
-    } else {
+    if (!edited) {
       return value
     }
-  }, [edited, value])
+    if (model === ItemModel.DATA) {
+      return (
+        <Select style={{ minWidth: 120 }} onChange={onSelectChange}>
+          {fieldsConfig.map(({ key, title }) => {
+            return <Option key={key} value={key}>{title}</Option>
+          })}
+        </Select>
+      )
+    }
+    return (
+      <textarea
+        className="text-input"
+        autoFocus
+        value={value}
+        onChange={e => setValue(e.target.value)}
+        onBlur={onChange}
+      />
+    )
+  }, [edited, value, model, fieldsConfig])
 
   return (
     <div ref={ref} className='componse-edit-input'>{children}</div>

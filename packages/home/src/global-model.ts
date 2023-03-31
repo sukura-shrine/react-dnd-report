@@ -1,11 +1,50 @@
 import { createModel } from "@/utils/create-context"
 
+export enum ItemModel {
+  DATA = 'data',
+  INPUT = 'input',
+}
+export enum ComponentType {
+  TEXT = 'text',
+  IMAGE = 'image',
+  TABLE = 'table',
+}
+
+export interface ItemConfig {
+  cid: string
+  sequence: number
+  type?: ComponentType
+  width?: number
+  height?: number
+  model?: ItemModel
+  keys?: any[]
+  value?: string
+}
+
+export interface FieldConfig {
+  key: string, title: string
+}
+
 export interface ModelState {
-  reportWidth: number  
+  reportWidth: number
+  fieldsConfig: FieldConfig[]
+  reportConfig: {
+    children: ItemConfig[]
+  }
+  selectedItem: ItemConfig | null
 }
 
 export const initState: ModelState = {
   reportWidth: 0,
+  fieldsConfig: [
+    { key: 'A', title: '字段1' },
+    { key: 'B', title: '字段2' },
+    { key: 'C', title: '字段3' },
+  ],
+  reportConfig: {
+    children: [],
+  },
+  selectedItem:  null
 }
 
 export default createModel(initState, {
@@ -14,5 +53,47 @@ export default createModel(initState, {
   },
   updateReportSize (state, payload: { reportWidth: number }) {
     return { ...state, reportWidth: payload.reportWidth }
+  },
+  addItem (state, payload: { type: ComponentType }) {
+    const { reportWidth, reportConfig } = state
+    reportConfig.children.push({
+      cid: String(Date.now()),
+      sequence: reportConfig.children.length,
+      type: payload.type,
+      width: reportWidth,
+      model: ItemModel.INPUT,
+    })
+    return { ...state, reportConfig: { ...reportConfig } }
+  },
+  selectItem (state, payload: { cid: string }) {
+    if (state.selectedItem?.cid !== payload.cid) {
+      const item = state.reportConfig.children.find(item => item.cid === payload.cid)
+      if (item) {
+        return { ...state, selectedItem: item }
+      }
+    }
+    return state
+  },
+  updateItemConfig (state, payload: { itemConfig: ItemConfig }) {
+    const { reportConfig } = state
+    const { itemConfig } = payload
+    const children = reportConfig.children.filter(item => item.cid !== itemConfig.cid)
+    children.push(itemConfig)
+    reportConfig.children = children
+    
+    return { ...state, reportConfig: { ...reportConfig }, selectedItem: itemConfig }
+  },
+  updateItem (state, payload: ItemConfig) {
+    const { reportConfig } = state
+    const { cid, ...args } = payload
+    const item = reportConfig.children.find(item => item.cid === cid)
+    // 更新值但是不刷新页面，组件状态在组件内部维护
+    if (item) {
+      Object.keys(args).forEach((key) => {
+        //@ts-ignore
+        item[key] = args[key]
+      })
+    }
+    return state
   },
 })
