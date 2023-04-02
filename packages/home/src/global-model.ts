@@ -1,4 +1,5 @@
 import { createModel } from "@/utils/create-context"
+import { ModelState as TableModelState, RulerItem } from './components/table/model'
 
 export enum ItemModel {
   DATA = 'data',
@@ -6,7 +7,7 @@ export enum ItemModel {
 }
 export enum ComponentType {
   TEXT = 'text',
-  IMAGE = 'image',
+  // IMAGE = 'image',
   TABLE = 'table',
 }
 
@@ -21,6 +22,12 @@ export interface ItemConfig {
   value?: string
 }
 
+export interface TableItemConfig extends ItemConfig {
+  values?: string[]
+  rulerColumns: RulerItem[]
+  rulerRows: RulerItem[],
+}
+
 export interface FieldConfig {
   key: string, title: string
 }
@@ -29,7 +36,7 @@ export interface ModelState {
   reportWidth: number
   fieldsConfig: FieldConfig[]
   reportConfig: {
-    children: ItemConfig[]
+    children: (ItemConfig | TableItemConfig)[]
   }
   selectedItem: ItemConfig | null
 }
@@ -94,6 +101,18 @@ export default createModel(initState, {
         item[key] = args[key]
       })
     }
+    return state
+  },
+  updateTableItem (state, payload: { cid: string, tableState: TableModelState }) {
+    const { cid, tableState } = payload
+    const { rulerColumns, rulerRows, values } = tableState
+    const item = state.reportConfig.children.find(item => item.cid === cid) as TableItemConfig
+    if (!item) {
+      return state
+    }
+    item.rulerColumns = rulerColumns
+    item.rulerRows = rulerRows
+    item.values = values
     return state
   },
 })
