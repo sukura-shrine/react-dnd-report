@@ -18,7 +18,7 @@ export default function FieldDialog ({ open, onCancel, onOk }: FieldProps) {
   const [form] = Form.useForm()
   return (
     <Modal
-      open={open}
+      visible={open}
       title="Create a new collection"
       okText="Create"
       cancelText="Cancel"

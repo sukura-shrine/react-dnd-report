@@ -1,7 +1,7 @@
 import React from 'react'
 import { Resizable } from 're-resizable'
-import { TextProps } from '@/components/types'
-import './style.css'
+import { TextProps } from '../../components/types'
+import './style.less'
 
 const Image:React.FC<TextProps> = (props: TextProps) => {
   return (

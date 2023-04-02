@@ -1,5 +1,6 @@
 import React from "react"
-import { ItemModel, FieldConfig } from '@/global-model'
+import { ItemModel, FieldConfig } from '../global-model'
+import { ModelState } from './table/model'
 
 export interface BoxData {
   width: number
@@ -44,12 +45,13 @@ export interface TextProps {
   value?: string
   editable?: boolean
   controlled?: boolean
-  onChange?: () => void
+  onChange?: (cid: string, state: TextProps) => void
   onClick?: () => void
 }
 
 export interface TableBodyProps {
   cid: string
+  onChange?: (cid: string, state: ModelState) => void
 }
 
 export interface TableHeaderProps {

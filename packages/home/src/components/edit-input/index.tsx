@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react'
 import { fromEvent, exhaustMap, interval, takeUntil } from 'rxjs'
 import { Select } from 'antd'
-import { EditInputProps } from '@/components/types'
-import { ItemModel } from '@/global-model'
-import './style.css'
+import { EditInputProps } from '../../components/types'
+import { ItemModel } from '../../global-model'
+import './style.less'
 
 const { Option } = Select
 

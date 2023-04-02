@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState, useMemo } from 'react'
 import { Button, Form, Select } from 'antd'
-import { ItemModel } from '@/global-model'
-import GlobalContext from '@/global-context'
-import './style.css'
+import { ItemModel } from '../../../global-model'
+import GlobalContext from '../../../global-context'
+
+import './style.less'
 
 const Attrs: React.FC = () => {
   const { state, dispatch } = useContext(GlobalContext)
@@ -11,7 +12,6 @@ const Attrs: React.FC = () => {
   const onFinish = () => {}
 
   const onChange = (value: ItemModel) => {
-    console.log(value)
     if (selectedItem) {
       dispatch({
         type: 'updateItemConfig',
@@ -46,14 +46,14 @@ const Attrs: React.FC = () => {
 }
 
 export default function Tools (props: any) {
-  
+  const { state, dispatch } = useContext(GlobalContext)
 
   return (
     <div className="attrs-bar">
       <Attrs />
       <div className="attr-buttons">
         <div className="report-editor-button">字段配置</div>
-        <div className="report-editor-button">保存</div>
+        <div className="report-editor-button" onClick={props.onSave}>保存</div>
       </div>
     </div>
   )

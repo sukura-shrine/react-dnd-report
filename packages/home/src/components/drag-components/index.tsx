@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDrag } from 'react-dnd'
-import './style.css'
+import './style.less'
 
 export interface DragTextProps {
   children: React.ReactNode

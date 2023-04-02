@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useMemo, useRef } from 'react'
 import { useDrag, useDragLayer } from 'react-dnd'
-import { RulerProps } from '@/components/types'
+import { PlusOutlined } from '@ant-design/icons'
+import { RulerProps } from '../../components/types'
 import { RulerContext } from './context'
 
 export const HorizontalDragHandler: React.FC<{ loc: any, width: number, disable?: boolean }> = ({ loc, width, disable }) => {
@@ -87,8 +88,7 @@ const Ruler: React.FC<RulerProps> = (props) => {
 
   const topRuler = useMemo(() => {
     return state.rulerColumns.map(({ loc, width }, i) => {
-      const disable = i === state.rulerColumns.length - 1
-      return <HorizontalDragHandler key={i} loc={loc} width={width} disable={disable} />
+      return <HorizontalDragHandler key={i} loc={loc} width={width} />
     })
   }, [state.rulerColumns])
 
@@ -98,14 +98,31 @@ const Ruler: React.FC<RulerProps> = (props) => {
     })
   }, [state.rulerRows])
   
+  const onClickTop = () => {
+    dispatch({
+      type: 'addColumn'
+    })
+  }
+  const onClickleft = () => {
+    dispatch({
+      type: 'addRow'
+    })
+  }
+
   return (
     <div className="component-ruler">
       <div className='ruler-handle'></div>
       <div className='ruler-top'>
         {topRuler}
+        <div className='ruler-top-plus' onClick={onClickTop}>
+          <PlusOutlined />
+        </div>
       </div>
       <div className='ruler-left'>
         {leftRuler}
+        <div className='ruler-left-plus' onClick={onClickleft}>
+          <PlusOutlined />
+        </div>
       </div>
       <div className='ruler-content'>
         {props.children}

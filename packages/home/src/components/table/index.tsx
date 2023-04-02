@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useReducer } from 'react'
 import Ruler from './ruler'
-import { TableBodyProps } from '@/components/types'
+import { TableBodyProps } from '../../components/types'
 import { RulerContext } from './context'
-import GlobalContext from '@/global-context'
+import GlobalContext from '../../global-context'
 import model from './model'
 
 import Body from './body'
-import './style.css'
+import './style.less'
 
 const Table:React.FC<TableBodyProps> = (props) => {
   const context = useContext(GlobalContext)
@@ -16,6 +16,17 @@ const Table:React.FC<TableBodyProps> = (props) => {
   useEffect(() => {
     dispatch({ type: 'createGrid', payload: { reportWidth } })
   }, [reportWidth])
+
+  useEffect(() => {
+    context.dispatch({
+      type: 'updateTableItem',
+      payload: {
+        cid: props.cid,
+        tableState: state,
+      }
+    })
+  }, [state])
+
   return (
     <RulerContext.Provider value={{ state, dispatch }}>
       <div className='component-table' >

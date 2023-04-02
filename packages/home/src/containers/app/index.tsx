@@ -1,34 +1,46 @@
-import React, { useState, useReducer } from 'react'
-import { Layout, Menu, theme } from 'antd'
+import React, { useEffect, useReducer } from 'react'
 
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-// @ts-ignore
+// import { useSearchParams } from 'react-router-dom'
 
 import Tools from './tools'
 import DropCanvas from './drop-canvas'
 import ArrtsBar from './attrs-bar'
 
-import GlobalContext from '@/global-context'
-import GlobalModel from '@/global-model'
+import GlobalContext from '../../global-context'
+import GlobalModel from '../../global-model'
 
-import 'antd/dist/reset.css'
-import './app.style.css'
+// import { useReportTemplate, updateReportTemplate } from 'services/api/DFMS/report'
 
-const { Header, Sider, Content } = Layout
+import './style.less'
 
 export default function App (props: any) {
   const [state, dispatch] = useReducer(GlobalModel.reducer, GlobalModel.state)
-  const {
-    token: {},
-  } = theme.useToken()
+  // const [searchParams] = useSearchParams()
+  // const { data } = useReportTemplate(searchParams.get('id') || undefined)
+
+  // useEffect(() => {
+  //   dispatch({
+  //     type: 'reportInit',
+  //     payload: {
+  //       data,
+  //     }
+  //   })
+  // }, [data])
+
+  const onSave = () => {
+    // const { id, reportTitle, remark } = data as any
+    const { reportWidth, fieldsConfig, reportConfig } = state
+    // updateReportTemplate({ id, reportTitle, remark, reportConfig: { reportWidth, fieldsConfig, reportConfig } })
+  }
 
   return (
     <GlobalContext.Provider value={{ state, dispatch }}>
       <div className="container-app-wrap">
         <div className="container-app">
           <div className='header'>
-            <ArrtsBar />
+            <ArrtsBar onSave={onSave} />
           </div>
           <div className="body">
             <DndProvider backend={HTML5Backend}>

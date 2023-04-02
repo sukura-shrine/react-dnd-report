@@ -1,20 +1,29 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import router from './router'
+import App from './containers/app'
+import './style.less'
 
-import './global.style.css'
+// export default App
 
-type AppProp = {
-  [key: string]: any
-}
 
-let root:any
+// import { RouterProvider, createBrowserRouter } from "react-router-dom";
+// import router from './router'
 
-function render (props: AppProp) {
-  root = ReactDOM.createRoot(document.getElementById('app') as Element)
-  root.render(
-    <RouterProvider router={createBrowserRouter(router)} />
-  )
-}
-render({})
+// import './global.style.css'
+
+const root = ReactDOM.createRoot(document.getElementById('app') as Element)
+root.render(<App />)
+
+// type AppProp = {
+//   [key: string]: any
+// }
+
+// let root:any
+
+// function render (props: AppProp) {
+//   root = ReactDOM.createRoot(document.getElementById('app') as Element)
+//   root.render(
+//     <RouterProvider router={createBrowserRouter(router)} />
+//   )
+// }
+// render({})

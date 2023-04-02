@@ -1,16 +1,16 @@
 import React, { useEffect, useState, useContext, useMemo } from 'react'
 import { useDrop } from 'react-dnd'
-import Text from '@/components/text'
-import Image from '@/components/image'
-import Table from '@/components/table'
-import GlobalContext from '@/global-context'
-import { ComponentType } from '@/global-model'
+import Text from '../../../components/text'
+// import Image from '../../../components/image'
+import Table from '../../../components/table'
+import GlobalContext from '../../../global-context'
+import { ComponentType } from '../../../global-model'
 
-import './style.css'
+import './style.less'
 
 const componentTypeMap = {
   'text': Text,
-  'image': Image,
+  // 'image': Image,
   'table': Table,
 }
 

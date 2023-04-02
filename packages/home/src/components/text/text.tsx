@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useMemo } from 'react'
 import { Resizable } from 're-resizable'
-import EditInput from '@/components/edit-input'
-import { TextProps } from '@/components/types'
-import GlobalContext from '@/global-context'
-import './style.css'
+import EditInput from '../../components/edit-input'
+import { TextProps } from '../../components/types'
+import GlobalContext from '../../global-context'
+import './style.less'
 
 const Text:React.FC<TextProps> = (props: TextProps) => {
   const { state, dispatch } = useContext(GlobalContext)

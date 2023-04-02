@@ -1,4 +1,4 @@
-import { createModel } from "@/utils/create-context"
+import { createModel } from "./utils/create-context"
 import { ModelState as TableModelState, RulerItem } from './components/table/model'
 
 export enum ItemModel {
@@ -57,6 +57,9 @@ export const initState: ModelState = {
 export default createModel(initState, {
   init () {
     return { ...initState }
+  },
+  reportInit (state) {
+    return state
   },
   updateReportSize (state, payload: { reportWidth: number }) {
     return { ...state, reportWidth: payload.reportWidth }

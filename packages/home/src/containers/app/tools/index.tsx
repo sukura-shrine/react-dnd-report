@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import { DragText, DragImg, DragTable } from '@/components/drag-components'
+import React from 'react'
+import { DragText, DragTable } from '../../../components/drag-components'
 import {
   TableOutlined
 } from '@ant-design/icons';
-import './style.css'
+import './style.less'
 
 export default function Tools (props: any) {
   return (

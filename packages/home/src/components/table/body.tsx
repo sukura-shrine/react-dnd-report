@@ -1,12 +1,10 @@
 import React, { useEffect, useContext, useMemo, useRef } from 'react'
 import { fromEvent, map, switchMap, takeUntil, distinctUntilChanged } from 'rxjs'
-import classNames from 'classNames'
-import { TableBodyProps } from '@/components/types'
 import { RulerContext } from './context'
-import GlobalContext from '@/global-context'
+import GlobalContext from '../../global-context'
 
 import EditInput from '../edit-input'
-import './style.css'
+import './style.less'
 
 const Body:React.FC = (props) => {
   const { state: globalState } = useContext(GlobalContext)
@@ -76,8 +74,9 @@ const Body:React.FC = (props) => {
         if (points) {
           selected = j >= points.startX && j <= points.endX && i >= points.startY && i <= points.endY
         }
+        const name = "table-body-grid" + (selected ? ' grid-selected' : '')
         grids.push(
-          <div key={key} className={classNames("table-body-grid", { "grid-selected": selected })} data-index={key}>
+          <div key={key} className={name} data-index={key}>
             <EditInput fieldsConfig={globalState.fieldsConfig} />
           </div>
         )
