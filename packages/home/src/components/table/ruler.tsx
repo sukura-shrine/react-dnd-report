@@ -4,7 +4,13 @@ import { PlusOutlined } from '@ant-design/icons'
 import { RulerProps } from '../../components/types'
 import { RulerContext } from './context'
 
-export const HorizontalDragHandler: React.FC<{ loc: any, width: number, disable?: boolean }> = ({ loc, width, disable }) => {
+interface HorizontalProps {
+  loc: any,
+  width: number,
+  disable?: boolean
+  onClick: (loc: any) => void
+}
+export const HorizontalDragHandler: React.FC<HorizontalProps> = ({ loc, width, disable, onClick }) => {
   const ref = useRef<HTMLDivElement>(null)
   
   const [{ isDragging }, drag] = useDrag(() => {
@@ -20,14 +26,19 @@ export const HorizontalDragHandler: React.FC<{ loc: any, width: number, disable?
   }, [ref])
   
   return (
-    <div ref={ref} className='ruler-item' style={{ width: `${width}px` }}>
+    <div ref={ref} className='ruler-item' style={{ width: `${width}px` }} onClick={() => onClick(loc)}>
       <div />
       {disable ? null : <div  className="horizontal-drag-handler-wrap"><div ref={drag} className='drag-handler'/></div>}
     </div>
   )
 }
 
-export const VerticalDragHandler: React.FC<{ loc: any, height: number }> = ({ loc, height }) => {
+interface VerticalProps {
+  loc: any,
+  height: number,
+  onClick: (loc: any) => void
+}
+export const VerticalDragHandler: React.FC<VerticalProps> = ({ loc, height, onClick }) => {
   const ref = useRef<HTMLDivElement>(null)
   
   const [{ isDragging }, drag] = useDrag(() => {
@@ -43,7 +54,7 @@ export const VerticalDragHandler: React.FC<{ loc: any, height: number }> = ({ lo
   }, [ref])
   
   return (
-    <div ref={ref} className='ruler-item' style={{ height: `${height}px` }}>
+    <div ref={ref} className='ruler-item' style={{ height: `${height}px` }} onClick={() => onClick(loc)}>
       <div />
       <div  className="vertical-drag-handler-wrap"><div ref={drag} className='drag-handler'/></div>
     </div>
@@ -86,15 +97,25 @@ const Ruler: React.FC<RulerProps> = (props) => {
     
   }, [type, loc, width, height])
 
+  const onClickTopRuler = () => {
+
+  }
+  const onClickLeftRuler = (loc: any) => {
+    dispatch({
+      type: 'selectLeftRuler',
+      payload: { loc }
+    })
+  }
+
   const topRuler = useMemo(() => {
     return state.rulerColumns.map(({ loc, width }, i) => {
-      return <HorizontalDragHandler key={i} loc={loc} width={width} />
+      return <HorizontalDragHandler key={i} loc={loc} width={width} onClick={onClickTopRuler} />
     })
   }, [state.rulerColumns])
 
   const leftRuler = useMemo(() => {
     return state.rulerRows.map(({ loc, height }, i) => {
-      return <VerticalDragHandler key={i} loc={loc} height={height} />
+      return <VerticalDragHandler key={i} loc={loc} height={height} onClick={onClickLeftRuler} />
     })
   }, [state.rulerRows])
   

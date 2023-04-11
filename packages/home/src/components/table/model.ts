@@ -1,3 +1,4 @@
+import { statisticToken } from "antd/es/theme/internal"
 import { createModel } from "../../utils/create-context"
 
 export interface RulerItem {
@@ -38,17 +39,19 @@ export interface ModelState {
     startX: number, startY: number, endX: number, endY: number
   } | null,
   selectedState: SelectedState
+  selectedLeftRuler: any,
 }
 
 export const initState: ModelState = {
   columnLength: 3,
-  rowLength: 3,
+  rowLength: 1,
   tableWidth: 0,
   rulerColumns: [],
   rulerRows: [],
   values: [],
   selectedGrids: null,
   selectedState: SelectedState.SELECTED,
+  selectedLeftRuler: null,
 }
 
 export default createModel(initState, {
@@ -66,7 +69,9 @@ export default createModel(initState, {
     for (let i = 0; i < rowLength; i++) {
       rulerRows.push({ type: 'vertical', loc: i + 1, height: 40 })
     }
-    return { ...state, rulerColumns, rulerRows, tableWidth, columnLength }
+    const length = rulerColumns.length * rulerRows.length
+    const values = [...Array(length)].map((v, i) => '')
+    return { ...state, rulerColumns, rulerRows, tableWidth, columnLength, values }
   },
   addColumn (state) {
     const { tableWidth, rulerColumns } = state
@@ -77,8 +82,9 @@ export default createModel(initState, {
     return { ...state, rulerColumns: columns, columnLength: columns.length  }
   },
   addRow (state) {
-    const { rulerRows } = state
+    const { rulerRows, columnLength, values } = state
     const rows: RulerRows[] = [...rulerRows, { type: 'vertical', loc: rulerRows.length, height: 40 }]
+    values.push.apply(values, [...Array(columnLength)].map(v => ''))
     
     return { ...state, rulerRows: rows, rowLength: rows.length }
   },
@@ -116,5 +122,19 @@ export default createModel(initState, {
   },
   unSelect (state) {
     return { ...state, selectedState: SelectedState.UNSELECTED }
-  }
+  },
+
+  selectLeftRuler (state, payload: { loc: any }) {
+    return { ...state, selectedLeftRuler: payload.loc }
+  },
+
+  editItem (state, payload: { dataIndex: string, value: string }) {
+    const { dataIndex, value } = payload
+    const [x, y] = dataIndex.split(',').map(v => Number(v))
+    const index = y * state.rowLength + x
+    state.values[index] = value
+    console.log(state.values)
+    
+    return state
+  },
 })

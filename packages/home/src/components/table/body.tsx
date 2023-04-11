@@ -52,6 +52,16 @@ const Body:React.FC = (props) => {
     }
   }, [tBody])
 
+  const onEdit = (dataIndex: string, value: string) => {
+    dispatch({
+      type: 'editItem',
+      payload: {
+        dataIndex,
+        value,
+      }
+    })
+  }
+
   const children = useMemo(() => {
     const grids = []
     
@@ -77,7 +87,7 @@ const Body:React.FC = (props) => {
         const name = "table-body-grid" + (selected ? ' grid-selected' : '')
         grids.push(
           <div key={key} className={name} data-index={key}>
-            <EditInput fieldsConfig={globalState.fieldsConfig} />
+            <EditInput fieldsConfig={globalState.fieldsConfig} onChange={onEdit.bind(this, key)} />
           </div>
         )
       }

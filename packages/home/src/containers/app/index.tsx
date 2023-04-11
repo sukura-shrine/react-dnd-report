@@ -44,7 +44,7 @@ export default function App (props: any) {
           </div>
           <div className="body">
             <DndProvider backend={HTML5Backend}>
-              <Tools />
+              <Tools onSave={() => console.log(state)}/>
               <DropCanvas />
             </DndProvider>  
           </div>

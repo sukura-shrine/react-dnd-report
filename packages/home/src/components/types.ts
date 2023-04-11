@@ -1,5 +1,5 @@
 import React from "react"
-import { ItemModel, FieldConfig } from '../global-model'
+import { ItemModel, FieldConfig, ItemConfig } from '../global-model'
 import { ModelState } from './table/model'
 
 export interface BoxData {
@@ -28,7 +28,7 @@ export interface RowData {
 export interface DataMapConfig {
   [columnName: string]: string
 }
-export interface TextProps {
+export interface TextProps extends ItemConfig {
   cid: string
   className?: string
   model?: ItemModel
@@ -37,7 +37,7 @@ export interface TextProps {
   color?: string
   backgroundColor?: string
   align?: string
-  fontSize?: string
+  fontSize?: number
   width?: number
   height?: number
   x?: number
@@ -49,7 +49,7 @@ export interface TextProps {
   onClick?: () => void
 }
 
-export interface TableBodyProps {
+export interface TableBodyProps extends ItemConfig {
   cid: string
   onChange?: (cid: string, state: ModelState) => void
 }

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer } from 'react'
+import React, { useContext, useEffect, useReducer, useMemo } from 'react'
 import Ruler from './ruler'
 import { TableBodyProps } from '../../components/types'
 import { RulerContext } from './context'
@@ -27,9 +27,25 @@ const Table:React.FC<TableBodyProps> = (props) => {
     })
   }, [state])
 
+  const onClick = () => {
+    context.dispatch({
+      type: 'selectItem',
+      payload: {
+        cid: props.cid,
+      }
+    })
+  }
+
+  const styles = useMemo(() => {
+    const { fontSize, fontStyle, fontWeight, textDecoration } = props
+    return {
+      fontSize, fontStyle, fontWeight, textDecoration,
+    }
+  }, [props])
+
   return (
     <RulerContext.Provider value={{ state, dispatch }}>
-      <div className='component-table' >
+      <div className='component-table' style={styles} onClick={onClick}>
         <Ruler>
           <Body />
         </Ruler>

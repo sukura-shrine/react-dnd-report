@@ -20,6 +20,14 @@ export interface ItemConfig {
   model?: ItemModel
   keys?: any[]
   value?: string
+  fontSize?: number
+  fontWeight?: string
+  fontStyle?: string
+  textDecoration?: string
+  borderWidth?: string
+  borderStyle?: string
+  borderColor?: string
+  dataGroup?: string
 }
 
 export interface TableItemConfig extends ItemConfig {
@@ -44,14 +52,12 @@ export interface ModelState {
 export const initState: ModelState = {
   reportWidth: 0,
   fieldsConfig: [
-    { key: 'A', title: '字段1' },
-    { key: 'B', title: '字段2' },
-    { key: 'C', title: '字段3' },
   ],
   reportConfig: {
-    children: [],
+    children: [
+    ],
   },
-  selectedItem:  null
+  selectedItem: null
 }
 
 export default createModel(initState, {
@@ -66,13 +72,19 @@ export default createModel(initState, {
   },
   addItem (state, payload: { type: ComponentType }) {
     const { reportWidth, reportConfig } = state
-    reportConfig.children.push({
+    const item: ItemConfig = {
       cid: String(Date.now()),
       sequence: reportConfig.children.length,
       type: payload.type,
       width: reportWidth,
       model: ItemModel.INPUT,
-    })
+      fontSize: 14,
+    }
+    if (item.type === ComponentType.TEXT) {
+      item.height = 40
+    }
+    reportConfig.children.push(item)
+    
     return { ...state, reportConfig: { ...reportConfig } }
   },
   selectItem (state, payload: { cid: string }) {
@@ -89,6 +101,7 @@ export default createModel(initState, {
     const { itemConfig } = payload
     const children = reportConfig.children.filter(item => item.cid !== itemConfig.cid)
     children.push(itemConfig)
+    children.sort((a, b) => a.sequence - b.sequence)
     reportConfig.children = children
     
     return { ...state, reportConfig: { ...reportConfig }, selectedItem: itemConfig }
