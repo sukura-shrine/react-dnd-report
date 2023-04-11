@@ -47,7 +47,7 @@ const Table:React.FC<TableBodyProps> = (props) => {
     <RulerContext.Provider value={{ state, dispatch }}>
       <div className='component-table' style={styles} onClick={onClick}>
         <Ruler>
-          <Body />
+          <Body {...props} />
         </Ruler>
       </div>
     </RulerContext.Provider>

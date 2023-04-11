@@ -17,23 +17,31 @@ interface TextAttrsProps {
 export default function TextAttrs (props: TextAttrsProps) {
   const { selectedItem } = props
   const [fontSize, setFontSize] = useState<number>(selectedItem.fontSize || 14)
-  const [fontWeight, setFontWeight] = useState<string>()
-  const [fontStyle, setFontStyle] = useState<string>()
-  const [textDecoration, setTextDecoration] = useState<string>()
+  const [fontWeight, setFontWeight] = useState<string>(selectedItem.fontWeight as string)
+  const [fontStyle, setFontStyle] = useState<string>(selectedItem.fontStyle as string)
+  const [textDecoration, setTextDecoration] = useState<string>(selectedItem.textDecoration as string)
+  const [placeItems, setPlaceItems] = useState<string>(selectedItem.placeItems as string)
 
   const onFontStyleChange = (type: string, checked: boolean) => {
     if (type === 'bold') {
-      setFontWeight(checked ? 'bold' : undefined)
+      setFontWeight(checked ? 'bold' : '')
     } else if (type === 'italic') {
-      setFontStyle(checked ? 'italic' : undefined)
+      setFontStyle(checked ? 'italic' : '')
     } else if (type === 'underline') {
-      setTextDecoration(checked ? 'underline' : undefined)
+      setTextDecoration(checked ? 'underline' : '')
     }
   }
   useEffect(() => {
-    const item = { ...selectedItem, fontSize, fontWeight, fontStyle, textDecoration }
+    const item = {
+      ...selectedItem,
+      fontSize,
+      fontWeight,
+      fontStyle,
+      textDecoration,
+      placeItems
+    }
     props.onChange(item)
-  }, [fontSize, fontWeight, fontStyle, textDecoration])
+  }, [selectedItem.cid, fontSize, fontWeight, fontStyle, textDecoration, placeItems])
 
   return (
     <div className='attr-text'>
@@ -61,6 +69,8 @@ export default function TextAttrs (props: TextAttrsProps) {
           </IconCheckbox>
         </Space>
         <BorderInnerOutlined />
+        <div>对齐</div>
+        <Input size="small" value={placeItems} onChange={e => setPlaceItems(e.target.value)} />
       </Space>
     </div>
   )

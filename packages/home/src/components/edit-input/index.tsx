@@ -62,7 +62,7 @@ const EditInput:React.FC<EditInputProps> = (props) => {
   }, [edited, value, model, fieldsConfig])
 
   return (
-    <div ref={ref} className='componse-edit-input'>{children}</div>
+    <div ref={ref} className='componse-edit-input' style={props.style}>{children}</div>
   )
 }
 export default EditInput

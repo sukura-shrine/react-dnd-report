@@ -1,12 +1,15 @@
 import React, { useEffect, useContext, useMemo, useRef } from 'react'
 import { fromEvent, map, switchMap, takeUntil, distinctUntilChanged } from 'rxjs'
+import { TableBodyProps } from '../../components/types'
 import { RulerContext } from './context'
 import GlobalContext from '../../global-context'
 
 import EditInput from '../edit-input'
 import './style.less'
 
-const Body:React.FC = (props) => {
+const Body:React.FC<TableBodyProps> = (props) => {
+  const { fontSize, fontStyle, fontWeight, textDecoration, placeItems } = props
+
   const { state: globalState } = useContext(GlobalContext)
   const { state, dispatch } = useContext(RulerContext)
   const { rowLength, columnLength, rulerColumns, rulerRows, selectedGrids } = state
@@ -76,6 +79,10 @@ const Body:React.FC = (props) => {
       }
       points = { startX, startY, endX, endY }
     }
+
+    const style = {
+      fontSize, fontStyle, fontWeight, textDecoration, placeItems
+    }
     
     for(let i = 0; i < rowLength; i++ ) {
       for (let j = 0; j < columnLength; j++) {
@@ -87,7 +94,7 @@ const Body:React.FC = (props) => {
         const name = "table-body-grid" + (selected ? ' grid-selected' : '')
         grids.push(
           <div key={key} className={name} data-index={key}>
-            <EditInput fieldsConfig={globalState.fieldsConfig} onChange={onEdit.bind(this, key)} />
+            <EditInput fieldsConfig={globalState.fieldsConfig} style={style} onChange={onEdit.bind(this, key)} />
           </div>
         )
       }

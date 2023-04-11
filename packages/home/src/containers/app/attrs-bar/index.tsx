@@ -12,6 +12,7 @@ const Attrs: React.FC = () => {
   const { selectedItem } = state
 
   const onChange = (itemConfig: ItemConfig) => {
+    console.log(itemConfig)
     dispatch({
       type: 'updateItemConfig',
       payload: {
@@ -29,7 +30,7 @@ const Attrs: React.FC = () => {
       return <Text selectedItem={selectedItem} onChange={onChange} />
     }
     if (type === ComponentType.TABLE) {
-      return <Table selectedItem={selectedItem} onChange={() => {}} />
+      return <Table selectedItem={selectedItem} onChange={onChange} />
     }
   }, [selectedItem])
 

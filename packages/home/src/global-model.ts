@@ -27,6 +27,7 @@ export interface ItemConfig {
   borderWidth?: string
   borderStyle?: string
   borderColor?: string
+  placeItems?: string
   dataGroup?: string
 }
 
@@ -64,8 +65,8 @@ export default createModel(initState, {
   init () {
     return { ...initState }
   },
-  reportInit (state) {
-    return state
+  reportInit (state, payload) {
+    return { ...state, ...payload.config }
   },
   updateReportSize (state, payload: { reportWidth: number }) {
     return { ...state, reportWidth: payload.reportWidth }

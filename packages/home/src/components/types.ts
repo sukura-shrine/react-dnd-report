@@ -67,5 +67,6 @@ export interface EditInputProps {
   model?: ItemModel
   value?: string
   fieldsConfig: FieldConfig[]
+  style?: React.CSSProperties
   onChange?: (value: string) => void
 }

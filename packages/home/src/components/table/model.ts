@@ -1,4 +1,3 @@
-import { statisticToken } from "antd/es/theme/internal"
 import { createModel } from "../../utils/create-context"
 
 export interface RulerItem {
@@ -133,7 +132,6 @@ export default createModel(initState, {
     const [x, y] = dataIndex.split(',').map(v => Number(v))
     const index = y * state.rowLength + x
     state.values[index] = value
-    console.log(state.values)
     
     return state
   },

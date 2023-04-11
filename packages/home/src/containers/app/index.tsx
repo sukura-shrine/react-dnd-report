@@ -17,21 +17,23 @@ import './style.less'
 
 export default function App (props: any) {
   const [state, dispatch] = useReducer(GlobalModel.reducer, GlobalModel.state)
-  // const [searchParams] = useSearchParams()
-  // const { data } = useReportTemplate(searchParams.get('id') || undefined)
 
-  // useEffect(() => {
-  //   dispatch({
-  //     type: 'reportInit',
-  //     payload: {
-  //       data,
-  //     }
-  //   })
-  // }, [data])
+  useEffect(() => {
+    let config = localStorage.getItem('config')
+    console.log(config)
+    config = config ? JSON.parse(config) : {},
+    console.log(config)
+    dispatch({
+      type: 'reportInit',
+      payload: {
+        config
+      }
+    })
+  }, [])
 
   const onSave = () => {
-    // const { id, reportTitle, remark } = data as any
-    const { reportWidth, fieldsConfig, reportConfig } = state
+    const { selectedItem, ...args } = state
+    localStorage.setItem('config', JSON.stringify(args))
     // updateReportTemplate({ id, reportTitle, remark, reportConfig: { reportWidth, fieldsConfig, reportConfig } })
   }
 

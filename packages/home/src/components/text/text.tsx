@@ -48,19 +48,19 @@ const Text: React.FC<TextProps> = (props) => {
   }
 
   const styles = useMemo(() => {
-    const { fontSize, fontWeight, fontStyle, textDecoration } = props
+    const { fontSize, fontWeight, fontStyle, textDecoration, placeItems } = props
     return {
       border: '1px solid',
       borderColor: state.selectedItem?.cid === props.cid ? '#a3d8fb' : undefined,
       cursor: 'move',
-      fontSize, fontWeight, fontStyle, textDecoration,
+      fontSize, fontWeight, fontStyle, textDecoration, placeItems,
     }
   }, [props, state.selectedItem])
 
   return (
     <Resizable size={size} onResizeStop={onResizeStop}>
-      <div className='componse-text' style={styles} onClick={onClick}>
-        <EditInput value={props.value} model={props.model} fieldsConfig={fieldsConfig} onChange={onChange} />
+      <div className='componse-text' onClick={onClick}>
+        <EditInput value={props.value} model={props.model} fieldsConfig={fieldsConfig} style={styles} onChange={onChange} />
       </div>
     </Resizable>
   )

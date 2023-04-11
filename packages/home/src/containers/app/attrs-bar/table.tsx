@@ -17,24 +17,34 @@ interface TableAttrsProps {
 export default function TableAttrs (props: TableAttrsProps) {
   const { selectedItem } = props
   const [fontSize, setFontSize] = useState<number>(selectedItem.fontSize || 14)
-  const [fontWeight, setFontWeight] = useState<string>()
-  const [fontStyle, setFontStyle] = useState<string>()
-  const [textDecoration, setTextDecoration] = useState<string>()
-  const [dataGroup, setDataGroup] = useState<string>()
+  const [fontWeight, setFontWeight] = useState<string>(selectedItem.fontWeight as string)
+  const [fontStyle, setFontStyle] = useState<string>(selectedItem.fontStyle as string)
+  const [textDecoration, setTextDecoration] = useState<string>(selectedItem.textDecoration as string)
+  const [placeItems, setPlaceItems] = useState<string>(selectedItem.placeItems as string)
+  const [dataGroup, setDataGroup] = useState<string>(selectedItem.dataGroup as string)
+  
   
   const onFontStyleChange = (type: string, checked: boolean) => {
     if (type === 'bold') {
-      setFontWeight(checked ? 'bold' : undefined)
+      setFontWeight(checked ? 'bold' : '')
     } else if (type === 'italic') {
-      setFontStyle(checked ? 'italic' : undefined)
+      setFontStyle(checked ? 'italic' : '')
     } else if (type === 'underline') {
-      setTextDecoration(checked ? 'underline' : undefined)
+      setTextDecoration(checked ? 'underline' : '')
     }
   }
   useEffect(() => {
-    const item = { ...selectedItem, fontSize, fontWeight, fontStyle, textDecoration, dataGroup }
+    const item = {
+      ...selectedItem,
+      fontSize,
+      fontWeight,
+      fontStyle,
+      textDecoration,
+      placeItems,
+      dataGroup
+    }
     props.onChange(item)
-  }, [fontSize, fontWeight, fontStyle, textDecoration, dataGroup])
+  }, [selectedItem.cid, fontSize, fontWeight, fontStyle, textDecoration, placeItems, dataGroup])
 
   return (
     <div>
@@ -60,6 +70,10 @@ export default function TableAttrs (props: TableAttrsProps) {
           <UnderlineOutlined />
         </IconCheckbox>
         <BorderInnerOutlined />
+        
+        <div>对齐</div>
+        <Input size="small" value={placeItems} onChange={e => setPlaceItems(e.target.value)} />
+
         <div>分组</div>
         <Input size="small" onChange={e => setDataGroup(e.target.value)} />
       </Space>
