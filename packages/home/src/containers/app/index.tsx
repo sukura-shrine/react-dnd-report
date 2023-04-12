@@ -20,9 +20,8 @@ export default function App (props: any) {
 
   useEffect(() => {
     let config = localStorage.getItem('config')
-    console.log(config)
+
     config = config ? JSON.parse(config) : {},
-    console.log(config)
     dispatch({
       type: 'reportInit',
       payload: {

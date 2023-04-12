@@ -9,6 +9,7 @@ import {
 
 import IconCheckbox from '../../../components/icon-checkbox/icon-checkbox'
 import { ItemConfig } from '../../../global-model'
+import Align from './align'
 
 interface TableAttrsProps {
   selectedItem: ItemConfig
@@ -22,7 +23,6 @@ export default function TableAttrs (props: TableAttrsProps) {
   const [textDecoration, setTextDecoration] = useState<string>(selectedItem.textDecoration as string)
   const [placeItems, setPlaceItems] = useState<string>(selectedItem.placeItems as string)
   const [dataGroup, setDataGroup] = useState<string>(selectedItem.dataGroup as string)
-  
   
   const onFontStyleChange = (type: string, checked: boolean) => {
     if (type === 'bold') {
@@ -72,7 +72,7 @@ export default function TableAttrs (props: TableAttrsProps) {
         <BorderInnerOutlined />
         
         <div>对齐</div>
-        <Input size="small" value={placeItems} onChange={e => setPlaceItems(e.target.value)} />
+        <Align value={placeItems} onClick={v => setPlaceItems(v)} />
 
         <div>分组</div>
         <Input size="small" onChange={e => setDataGroup(e.target.value)} />

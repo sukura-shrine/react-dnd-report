@@ -12,7 +12,6 @@ const Attrs: React.FC = () => {
   const { selectedItem } = state
 
   const onChange = (itemConfig: ItemConfig) => {
-    console.log(itemConfig)
     dispatch({
       type: 'updateItemConfig',
       payload: {

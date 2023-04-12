@@ -9,6 +9,20 @@ import {
 
 import IconCheckbox from '../../../components/icon-checkbox/icon-checkbox'
 import { ItemConfig } from '../../../global-model'
+import Align from './align'
+
+
+const alignList = [
+  'start start',
+  'start center',
+  'start end',
+  'center start',
+  'center center',
+  'center end',
+  'end start',
+  'end center',
+  'end end',
+]
 
 interface TextAttrsProps {
   selectedItem: ItemConfig
@@ -70,7 +84,8 @@ export default function TextAttrs (props: TextAttrsProps) {
         </Space>
         <BorderInnerOutlined />
         <div>对齐</div>
-        <Input size="small" value={placeItems} onChange={e => setPlaceItems(e.target.value)} />
+        <Align value={placeItems} onClick={v => setPlaceItems(v)} />
+        {/* <Input size="small" value={placeItems} onChange={e => setPlaceItems(e.target.value)} /> */}
       </Space>
     </div>
   )
