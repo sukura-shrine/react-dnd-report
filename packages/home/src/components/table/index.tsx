@@ -12,10 +12,17 @@ const Table:React.FC<TableBodyProps> = (props) => {
   const context = useContext(GlobalContext)
   const [state, dispatch] = useReducer(model.reducer, model.state)
 
-  const { reportWidth } = context.state
   useEffect(() => {
-    dispatch({ type: 'createGrid', payload: { reportWidth } })
-  }, [reportWidth])
+    if (!props.rulerColumns) {
+      const { reportWidth } = context.state
+      dispatch({ type: 'createGrid', payload: { reportWidth } })
+    } else {
+      dispatch({
+        type: 'init',
+        payload: props,
+      })
+    }
+  }, [])
 
   useEffect(() => {
     context.dispatch({

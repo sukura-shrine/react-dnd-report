@@ -12,7 +12,7 @@ const Body:React.FC<TableBodyProps> = (props) => {
 
   const { state: globalState } = useContext(GlobalContext)
   const { state, dispatch } = useContext(RulerContext)
-  const { rowLength, columnLength, rulerColumns, rulerRows, selectedGrids } = state
+  const { rowLength, columnLength, rulerColumns, rulerRows, selectedGrids, values } = state
 
   const tBody = useRef<HTMLDivElement>(null)
 
@@ -55,7 +55,7 @@ const Body:React.FC<TableBodyProps> = (props) => {
     }
   }, [tBody])
 
-  const onEdit = (dataIndex: string, value: string) => {
+  const onEdit = (dataIndex: number, value: string) => {
     dispatch({
       type: 'editItem',
       payload: {
@@ -64,6 +64,10 @@ const Body:React.FC<TableBodyProps> = (props) => {
       }
     })
   }
+
+  const style = useMemo(() => {
+    return { fontSize, fontStyle, fontWeight, textDecoration, placeItems, }
+  }, [fontSize, fontStyle, fontWeight, textDecoration, placeItems])
 
   const children = useMemo(() => {
     const grids = []
@@ -79,28 +83,25 @@ const Body:React.FC<TableBodyProps> = (props) => {
       }
       points = { startX, startY, endX, endY }
     }
-
-    const style = {
-      fontSize, fontStyle, fontWeight, textDecoration, placeItems
-    }
     
-    for(let i = 0; i < rowLength; i++ ) {
-      for (let j = 0; j < columnLength; j++) {
-        const key = `${j},${i}`
+    for(let y = 0; y < rowLength; y++ ) {
+      for (let x = 0; x < columnLength; x++) {
+        const key = y * columnLength + x
         let selected = false
         if (points) {
-          selected = j >= points.startX && j <= points.endX && i >= points.startY && i <= points.endY
+          selected = x >= points.startX && x <= points.endX && y >= points.startY && y <= points.endY
         }
+        const val = values ? values[key] : ''
         const name = "table-body-grid" + (selected ? ' grid-selected' : '')
         grids.push(
           <div key={key} className={name} data-index={key}>
-            <EditInput fieldsConfig={globalState.fieldsConfig} style={style} onChange={onEdit.bind(this, key)} />
+            <EditInput value={val} fieldsConfig={globalState.fieldsConfig} style={style} onChange={onEdit.bind(this, key)} />
           </div>
         )
       }
     }
     return grids
-  }, [rowLength, columnLength, selectedGrids])
+  }, [rowLength, columnLength, selectedGrids, values, style])
  
   const styles = useMemo(() => {
     return {

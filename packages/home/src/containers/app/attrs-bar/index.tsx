@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState, useMemo } from 'react'
-import { Button, Form, Select } from 'antd'
+import React, { useContext, useMemo } from 'react'
 import { ItemConfig, ComponentType } from '../../../global-model'
 import GlobalContext from '../../../global-context'
 import Text from './text'

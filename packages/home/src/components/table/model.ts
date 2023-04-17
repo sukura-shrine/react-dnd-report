@@ -7,17 +7,11 @@ export interface RulerItem {
   height?: number
 }
 
-export interface RulerItem {
-  type: 'horizontal' | 'vertical'
-  loc: any,
-  width?: number
-  height?: number
-}
-interface RulerColum extends RulerItem {
+export interface RulerColum extends RulerItem {
   width: number
 }
 
-interface RulerRows extends RulerItem {
+export interface RulerRows extends RulerItem {
   height: number
 }
 
@@ -54,8 +48,23 @@ export const initState: ModelState = {
 }
 
 export default createModel(initState, {
-  init (state) {
-    return { ...initState }
+  init (state, payload: ModelState) {
+    if (!payload) {
+      return { ...initState }
+    }
+    const { rulerColumns, rulerRows, values, tableWidth } = payload
+    const columnLength = rulerColumns.length
+    const rowLength = rulerRows.length
+    const item = {
+      columnLength, rowLength,
+      rulerColumns, rulerRows, values,
+    }
+    if (tableWidth) {
+      // @ts-ignore
+      item.tableWidth = tableWidth
+    }
+
+    return { ...state, ...item }
   },
   createGrid (state, payload: { reportWidth: number }) {
     const { columnLength, rowLength } = state;
@@ -73,12 +82,20 @@ export default createModel(initState, {
     return { ...state, rulerColumns, rulerRows, tableWidth, columnLength, values }
   },
   addColumn (state) {
-    const { tableWidth, rulerColumns } = state
+    const { tableWidth, rulerColumns, columnLength, values } = state
     const width = tableWidth / (rulerColumns.length + 1)
     rulerColumns.forEach(item => item.width = width)
     const columns: RulerColum[] = [...rulerColumns, { type: 'horizontal', loc: rulerColumns.length, width }]
+
+    const list: string[] = []
+    values.forEach((val, i) => {
+      list.push(val)
+      if ((i + 1) % columnLength === 0) {
+        list.push('')
+      }
+    })
     
-    return { ...state, rulerColumns: columns, columnLength: columns.length  }
+    return { ...state, rulerColumns: columns, columnLength: columns.length, values: list  }
   },
   addRow (state) {
     const { rulerRows, columnLength, values } = state
@@ -127,11 +144,9 @@ export default createModel(initState, {
     return { ...state, selectedLeftRuler: payload.loc }
   },
 
-  editItem (state, payload: { dataIndex: string, value: string }) {
+  editItem (state, payload: { dataIndex: number, value: string }) {
     const { dataIndex, value } = payload
-    const [x, y] = dataIndex.split(',').map(v => Number(v))
-    const index = y * state.rowLength + x
-    state.values[index] = value
+    state.values[dataIndex] = value
     
     return state
   },

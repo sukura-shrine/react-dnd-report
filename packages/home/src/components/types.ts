@@ -1,6 +1,6 @@
 import React from "react"
 import { ItemModel, FieldConfig, ItemConfig } from '../global-model'
-import { ModelState } from './table/model'
+import { ModelState, RulerColum, RulerRows } from './table/model'
 
 export interface BoxData {
   width: number
@@ -51,6 +51,10 @@ export interface TextProps extends ItemConfig {
 
 export interface TableBodyProps extends ItemConfig {
   cid: string
+  tableWidth?: number
+  rulerColumns?: RulerColum[]
+  rulerRows?: RulerRows[]
+  values?: string[]
   onChange?: (cid: string, state: ModelState) => void
 }
 

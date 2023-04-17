@@ -8,10 +8,10 @@ import './style.less'
 const { Option } = Select
 
 const EditInput:React.FC<EditInputProps> = (props) => {
-  const { value: defaultValue, model, fieldsConfig } = props
+  const { model, fieldsConfig } = props
   const ref = useRef<HTMLDivElement>(null)
   const [edited, setEdited] = useState(false)
-  const [value, setValue] = useState(defaultValue)
+  const [value, setValue] = useState(props.value)
   
   useEffect(() => {
     if (ref.current) {
@@ -26,7 +26,9 @@ const EditInput:React.FC<EditInputProps> = (props) => {
     }
   }, [ref])
 
-  useEffect(() => {})
+  useEffect(() => {
+    setValue(props.value)
+  }, [props.value])
 
   const onChange = () => {
     setEdited(false)

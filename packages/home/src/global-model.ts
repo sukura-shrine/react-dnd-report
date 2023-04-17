@@ -1,5 +1,5 @@
 import { createModel } from "./utils/create-context"
-import { ModelState as TableModelState, RulerItem } from './components/table/model'
+import { ModelState as TableModelState, RulerColum, RulerRows } from './components/table/model'
 
 export enum ItemModel {
   DATA = 'data',
@@ -32,9 +32,10 @@ export interface ItemConfig {
 }
 
 export interface TableItemConfig extends ItemConfig {
-  values?: string[]
-  rulerColumns: RulerItem[]
-  rulerRows: RulerItem[],
+  values: string[]
+  tableWidth: number,
+  rulerColumns: RulerColum[]
+  rulerRows: RulerRows[],
 }
 
 export interface FieldConfig {
@@ -122,7 +123,7 @@ export default createModel(initState, {
   },
   updateTableItem (state, payload: { cid: string, tableState: TableModelState }) {
     const { cid, tableState } = payload
-    const { rulerColumns, rulerRows, values } = tableState
+    const { rulerColumns, rulerRows, values, tableWidth } = tableState
     const item = state.reportConfig.children.find(item => item.cid === cid) as TableItemConfig
     if (!item) {
       return state
@@ -130,6 +131,7 @@ export default createModel(initState, {
     item.rulerColumns = rulerColumns
     item.rulerRows = rulerRows
     item.values = values
+    item.tableWidth = tableWidth
     return state
   },
 })
