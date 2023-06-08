@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useReducer, useMemo } from 'react'
 import Ruler from './ruler'
+import DnDHandle from '@/components/dnd-handle'
 import { TableBodyProps } from '../../components/types'
 import { RulerContext } from './context'
 import GlobalContext from '../../global-context'
@@ -51,13 +52,15 @@ const Table:React.FC<TableBodyProps> = (props) => {
   }, [props])
 
   return (
-    <RulerContext.Provider value={{ state, dispatch }}>
-      <div className='component-table' style={styles} onClick={onClick}>
-        <Ruler>
-          <Body {...props} />
-        </Ruler>
-      </div>
-    </RulerContext.Provider>
+    <DnDHandle>
+      <RulerContext.Provider value={{ state, dispatch }}>
+        <div className='component-table' style={styles} onClick={onClick}>
+          <Ruler>
+            <Body {...props} />
+          </Ruler>
+        </div>
+      </RulerContext.Provider>
+    </DnDHandle>
   )
 }
 export default Table

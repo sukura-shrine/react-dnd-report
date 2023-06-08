@@ -66,9 +66,10 @@ const Ruler: React.FC<RulerProps> = (props) => {
   const { type, loc, width, height } = useDragLayer(monitor => {
     const item = monitor.getItem()
     const offset = monitor.getSourceClientOffset()
-    if (!item || !offset) {
+    if (!item?.rulerItem || !offset) {
       return {}
     }
+
     const rect = item.rulerItem.current.getBoundingClientRect()
     return {
       type: item.type,

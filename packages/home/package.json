@@ -39,6 +39,7 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
+    "react-draggable": "^4.4.5",
     "react-router-dom": "^6.8.1",
     "rxjs": "^7.8.0",
     "swr": "^1.0.1"

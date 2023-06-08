@@ -72,7 +72,7 @@ export default createModel(initState, {
   updateReportSize (state, payload: { reportWidth: number }) {
     return { ...state, reportWidth: payload.reportWidth }
   },
-  addItem (state, payload: { type: ComponentType }) {
+  addItem (state, payload: { type: ComponentType, defaultSize: { width: number } }) {
     const { reportWidth, reportConfig } = state
     const item: ItemConfig = {
       cid: String(Date.now()),

@@ -1,8 +1,11 @@
 import React, { useContext, useState, useMemo } from 'react'
 import { Resizable } from 're-resizable'
+import Draggable, { DraggableData, DraggableEvent, DraggableEventHandler } from 'react-draggable'
+
 import EditInput from '../../components/edit-input'
 import { TextProps } from '../../components/types'
 import GlobalContext from '../../global-context'
+import DnDHandle from '../dnd-handle'
 import './style.less'
 
 const Text: React.FC<TextProps> = (props) => {
@@ -10,8 +13,8 @@ const Text: React.FC<TextProps> = (props) => {
   const { fieldsConfig } = state
 
   const [size, setSize] = useState({
-    width: props.width || 0,
-    height: props.height || 0,
+    width: props.width || 80,
+    height: props.height || 20,
   })
 
   const onClick = () => {
@@ -58,11 +61,15 @@ const Text: React.FC<TextProps> = (props) => {
   }, [props, state.selectedItem])
 
   return (
-    <Resizable size={size} onResizeStop={onResizeStop}>
-      <div className='componse-text' onClick={onClick}>
-        <EditInput value={props.value} model={props.model} fieldsConfig={fieldsConfig} style={styles} onChange={onChange} />
+    <DnDHandle>
+      <div style={{ position: 'absolute' }}>
+        <Resizable size={size} onResizeStop={onResizeStop}>
+          <div className='componse-text' onClick={onClick}>
+            <EditInput value={props.value} model={props.model} fieldsConfig={fieldsConfig} style={styles} onChange={onChange} />
+          </div>
+        </Resizable>
       </div>
-    </Resizable>
+    </DnDHandle>
   )
 }
 export default Text
