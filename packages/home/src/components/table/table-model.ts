@@ -48,7 +48,7 @@ export const initState: ModelState = {
 }
 
 export default createModel(initState, {
-  init (state, payload: ModelState) {
+  tableInit (state, payload: ModelState) {
     if (!payload) {
       return { ...initState }
     }
@@ -66,6 +66,7 @@ export default createModel(initState, {
 
     return { ...state, ...item }
   },
+
   createGrid (state, payload: { reportWidth: number }) {
     const { columnLength, rowLength } = state;
     const tableWidth = payload.reportWidth - 10 - columnLength - 1
@@ -81,6 +82,7 @@ export default createModel(initState, {
     const values = [...Array(length)].map((v, i) => '')
     return { ...state, rulerColumns, rulerRows, tableWidth, columnLength, values }
   },
+
   addColumn (state) {
     const { tableWidth, rulerColumns, columnLength, values } = state
     const width = tableWidth / (rulerColumns.length + 1)
@@ -97,6 +99,7 @@ export default createModel(initState, {
     
     return { ...state, rulerColumns: columns, columnLength: columns.length, values: list  }
   },
+
   addRow (state) {
     const { rulerRows, columnLength, values } = state
     const rows: RulerRows[] = [...rulerRows, { type: 'vertical', loc: rulerRows.length, height: 40 }]
@@ -104,6 +107,7 @@ export default createModel(initState, {
     
     return { ...state, rulerRows: rows, rowLength: rows.length }
   },
+
   updateColumn (state, payload: RulerItem) {
     const { rulerColumns } = state
     const { loc, width } = payload
@@ -114,6 +118,7 @@ export default createModel(initState, {
     }
     return state
   },
+
   updateRow (state, payload: RulerItem) {
     const { rulerRows } = state
     const { loc, height } = payload
@@ -124,18 +129,22 @@ export default createModel(initState, {
     }
     return state
   },
+
   selectGrid (state, payload: { index: string }) {
-    let { selectedGrids, selectedState } = state
-    const index = payload.index
-    const [x, y] = index.split(',').map(v => Number(v))
+    let { selectedGrids, selectedState, columnLength } = state
+    const index = Number(payload.index)
+
+    const yIndex = Math.ceil((index + 1) / columnLength) - 1
+    const xIndex = index - yIndex * columnLength
     
     if (!selectedGrids || selectedState === SelectedState.UNSELECTED) {
-      return { ...state, selectedGrids: { startX: x, startY: y, endX: x, endY: y }, selectedState: SelectedState.SELECTED }
+      return { ...state, selectedGrids: { startX: xIndex, startY: yIndex, endX: xIndex, endY: yIndex }, selectedState: SelectedState.SELECTED }
     }
 
-    selectedGrids = { ...selectedGrids, endX: x, endY: y }
+    selectedGrids = { ...selectedGrids, endX: xIndex, endY: yIndex }
     return { ...state, selectedGrids, selectedState: SelectedState.SELECTED }
   },
+
   unSelect (state) {
     return { ...state, selectedState: SelectedState.UNSELECTED }
   },

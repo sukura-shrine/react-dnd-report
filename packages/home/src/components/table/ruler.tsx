@@ -62,6 +62,7 @@ export const VerticalDragHandler: React.FC<VerticalProps> = ({ loc, height, onCl
 }
 
 const Ruler: React.FC<RulerProps> = (props) => {
+  const { importDataInterface } = props
   const { state, dispatch } = useContext(RulerContext)
   const { type, loc, width, height } = useDragLayer(monitor => {
     const item = monitor.getItem()
@@ -101,6 +102,7 @@ const Ruler: React.FC<RulerProps> = (props) => {
   const onClickTopRuler = () => {
 
   }
+
   const onClickLeftRuler = (loc: any) => {
     dispatch({
       type: 'selectLeftRuler',
@@ -108,18 +110,6 @@ const Ruler: React.FC<RulerProps> = (props) => {
     })
   }
 
-  const topRuler = useMemo(() => {
-    return state.rulerColumns.map(({ loc, width }, i) => {
-      return <HorizontalDragHandler key={i} loc={loc} width={width} onClick={onClickTopRuler} />
-    })
-  }, [state.rulerColumns])
-
-  const leftRuler = useMemo(() => {
-    return state.rulerRows.map(({ loc, height }, i) => {
-      return <VerticalDragHandler key={i} loc={loc} height={height} onClick={onClickLeftRuler} />
-    })
-  }, [state.rulerRows])
-  
   const onClickTop = () => {
     dispatch({
       type: 'addColumn'
@@ -131,21 +121,40 @@ const Ruler: React.FC<RulerProps> = (props) => {
     })
   }
 
-  return (
-    <div className="component-ruler">
-      <div className='ruler-handle'></div>
+  const topRuler = useMemo(() => {
+    importDataInterface
+    const list = state.rulerColumns.map(({ loc, width }, i) => {
+      return <HorizontalDragHandler key={i} loc={loc} width={width} onClick={onClickTopRuler} />
+    })
+    return (
       <div className='ruler-top'>
-        {topRuler}
+        {list}
         <div className='ruler-top-plus' onClick={onClickTop}>
           <PlusOutlined />
         </div>
       </div>
+    )
+  }, [state.rulerColumns])
+
+  const leftRuler = useMemo(() => {
+    const list = state.rulerRows.map(({ loc, height }, i) => {
+      return <VerticalDragHandler key={i} loc={loc} height={height} onClick={onClickLeftRuler} />
+    })
+    return (
       <div className='ruler-left'>
-        {leftRuler}
+        {list}
         <div className='ruler-left-plus' onClick={onClickleft}>
           <PlusOutlined />
         </div>
       </div>
+    )
+  }, [state.rulerRows])
+
+  return (
+    <div className="component-ruler">
+      <div className='ruler-handle'></div>
+      {topRuler}
+      {leftRuler}
       <div className='ruler-content'>
         {props.children}
       </div>

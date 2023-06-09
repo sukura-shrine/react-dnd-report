@@ -1,8 +1,8 @@
 import React, { useContext, useMemo } from 'react'
 import { ItemConfig, ComponentType } from '../../../global-model'
 import GlobalContext from '../../../global-context'
-import Text from './text'
-import Table from './table'
+import Text from './text-attrs'
+import Table from './table-attrs'
 
 import './style.less'
 
@@ -10,12 +10,10 @@ const Attrs: React.FC = () => {
   const { state, dispatch } = useContext(GlobalContext)
   const { selectedItem } = state
 
-  const onChange = (itemConfig: ItemConfig) => {
+  const onChange = (key: string, value: any) => {
     dispatch({
       type: 'updateItemConfig',
-      payload: {
-        itemConfig: itemConfig
-      }
+      payload: { key, value }
     })
   }
 
@@ -25,7 +23,7 @@ const Attrs: React.FC = () => {
     }
     const { type } = selectedItem
     if (type === ComponentType.TEXT) {
-      return <Text selectedItem={selectedItem} onChange={onChange} />
+      // return <Text selectedItem={selectedItem} onChange={onChange} />
     }
     if (type === ComponentType.TABLE) {
       return <Table selectedItem={selectedItem} onChange={onChange} />

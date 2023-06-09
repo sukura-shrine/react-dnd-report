@@ -1,6 +1,6 @@
 import React from "react"
 import { ItemModel, FieldConfig, ItemConfig } from '../global-model'
-import { ModelState, RulerColum, RulerRows } from './table/model'
+import { ModelState, RulerColum, RulerRows } from './table/table-model'
 
 export interface BoxData {
   width: number
@@ -63,6 +63,8 @@ export interface TableHeaderProps {
 }
 
 export interface RulerProps {
+  parentId?: string
+  importDataInterface?: boolean
   vertical?: boolean
   children?: React.ReactNode
 }

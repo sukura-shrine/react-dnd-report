@@ -65,7 +65,7 @@ const Body:React.FC<TableBodyProps> = (props) => {
     })
   }
 
-  const style = useMemo(() => {
+  const childStyles = useMemo(() => {
     return { fontSize, fontStyle, fontWeight, textDecoration, placeItems, }
   }, [fontSize, fontStyle, fontWeight, textDecoration, placeItems])
 
@@ -95,13 +95,13 @@ const Body:React.FC<TableBodyProps> = (props) => {
         const name = "table-body-grid" + (selected ? ' grid-selected' : '')
         grids.push(
           <div key={key} className={name} data-index={key}>
-            <EditInput value={val} fieldsConfig={globalState.fieldsConfig} style={style} onChange={onEdit.bind(this, key)} />
+            <EditInput value={val} fieldsConfig={globalState.fieldsConfig} style={childStyles} onChange={onEdit.bind(this, key)} />
           </div>
         )
       }
     }
     return grids
-  }, [rowLength, columnLength, selectedGrids, values, style])
+  }, [rowLength, columnLength, selectedGrids, values, childStyles])
  
   const styles = useMemo(() => {
     return {

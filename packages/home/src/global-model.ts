@@ -1,5 +1,6 @@
 import { createModel } from "./utils/create-context"
-import { ModelState as TableModelState, RulerColum, RulerRows } from './components/table/model'
+import { ModelState as TableModelState, RulerColum, RulerRows } from '@/components/table/table-model'
+import { isButtonElement } from "react-router-dom/dist/dom"
 
 export enum ItemModel {
   DATA = 'data',
@@ -13,6 +14,7 @@ export enum ComponentType {
 
 export interface ItemConfig {
   cid: string
+  parentId?: string
   sequence: number
   type?: ComponentType
   width?: number
@@ -28,6 +30,7 @@ export interface ItemConfig {
   borderStyle?: string
   borderColor?: string
   placeItems?: string
+  importDataInterface?: boolean
   dataGroup?: string
 }
 
@@ -74,8 +77,15 @@ export default createModel(initState, {
   },
   addItem (state, payload: { type: ComponentType, defaultSize: { width: number } }) {
     const { reportWidth, reportConfig } = state
+    const parentItem = reportConfig.children.find(item => {
+      if (item.type === ComponentType.TABLE && !item.parentId) {
+        return true
+      }
+    })
+
     const item: ItemConfig = {
       cid: String(Date.now()),
+      parentId: parentItem?.cid,
       sequence: reportConfig.children.length,
       type: payload.type,
       width: reportWidth,
@@ -98,15 +108,19 @@ export default createModel(initState, {
     }
     return state
   },
-  updateItemConfig (state, payload: { itemConfig: ItemConfig }) {
-    const { reportConfig } = state
-    const { itemConfig } = payload
-    const children = reportConfig.children.filter(item => item.cid !== itemConfig.cid)
-    children.push(itemConfig)
+  updateItemConfig (state, payload: { key: string, value: any }) {
+    const { reportConfig, selectedItem } = state
+    const { key, value } = payload
+    if (!selectedItem) {
+      return state
+    }
+    const children = reportConfig.children.filter(item => item.cid !== selectedItem.cid)
+    const newSelectItem = { ...selectedItem, [key]: value }
+    children.push(newSelectItem)
     children.sort((a, b) => a.sequence - b.sequence)
     reportConfig.children = children
-    
-    return { ...state, reportConfig: { ...reportConfig }, selectedItem: itemConfig }
+     
+    return { ...state, reportConfig: { ...reportConfig }, selectedItem: newSelectItem }
   },
   updateItem (state, payload: ItemConfig) {
     const { reportConfig } = state
