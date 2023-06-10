@@ -3,12 +3,13 @@ import { fromEvent, map, switchMap, takeUntil, distinctUntilChanged } from 'rxjs
 import { TableBodyProps } from '../../components/types'
 import { RulerContext } from './context'
 import GlobalContext from '../../global-context'
+import classnames from 'classnames'
 
 import EditInput from '../edit-input'
 import './style.less'
 
 const Body:React.FC<TableBodyProps> = (props) => {
-  const { fontSize, fontStyle, fontWeight, textDecoration, placeItems } = props
+  const { fontSize, fontStyle, fontWeight, textDecoration, placeItems, importDataInterface } = props
 
   const { state: globalState } = useContext(GlobalContext)
   const { state, dispatch } = useContext(RulerContext)
@@ -92,16 +93,22 @@ const Body:React.FC<TableBodyProps> = (props) => {
           selected = x >= points.startX && x <= points.endX && y >= points.startY && y <= points.endY
         }
         const val = values ? values[key] : ''
-        const name = "table-body-grid" + (selected ? ' grid-selected' : '')
+        
+        const classname = classnames('table-body-grid', {
+          'grid-selected': selected,
+          'import-data-interface': importDataInterface,
+        })
+        
         grids.push(
-          <div key={key} className={name} data-index={key}>
+          <div key={key} className={classname} data-index={key}>
             <EditInput value={val} fieldsConfig={globalState.fieldsConfig} style={childStyles} onChange={onEdit.bind(this, key)} />
           </div>
         )
       }
     }
+
     return grids
-  }, [rowLength, columnLength, selectedGrids, values, childStyles])
+  }, [rowLength, columnLength, selectedGrids, values, childStyles, importDataInterface])
  
   const styles = useMemo(() => {
     return {
@@ -109,7 +116,7 @@ const Body:React.FC<TableBodyProps> = (props) => {
       'gridTemplateRows': rulerRows.map(item => `${item.height}px`).join(' ')
     }
   }, [rulerColumns, rulerRows])
-  
+
   return (
     <div ref={tBody} id="table-body" className="component-table-body" style={styles}>
       {children}

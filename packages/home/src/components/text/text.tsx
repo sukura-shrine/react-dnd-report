@@ -50,6 +50,10 @@ const Text: React.FC<TextProps> = (props) => {
     setSize(newSize)
   }
 
+  const onStop = (args: any) => {
+    console.log(args)
+  }
+
   const styles = useMemo(() => {
     const { fontSize, fontWeight, fontStyle, textDecoration, placeItems } = props
     return {
@@ -61,14 +65,12 @@ const Text: React.FC<TextProps> = (props) => {
   }, [props, state.selectedItem])
 
   return (
-    <DnDHandle>
-      <div style={{ position: 'absolute' }}>
-        <Resizable size={size} onResizeStop={onResizeStop}>
-          <div className='componse-text' onClick={onClick}>
-            <EditInput value={props.value} model={props.model} fieldsConfig={fieldsConfig} style={styles} onChange={onChange} />
-          </div>
-        </Resizable>
-      </div>
+    <DnDHandle onStop={onStop}>
+      <Resizable size={size} onResizeStop={onResizeStop}>
+        <div className='componse-text' onClick={onClick}>
+          <EditInput value={props.value} model={props.model} fieldsConfig={fieldsConfig} style={styles} onChange={onChange} />
+        </div>
+      </Resizable>
     </DnDHandle>
   )
 }

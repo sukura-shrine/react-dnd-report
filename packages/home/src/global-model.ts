@@ -17,6 +17,8 @@ export interface ItemConfig {
   parentId?: string
   sequence: number
   type?: ComponentType
+  x?: number
+  y?: number
   width?: number
   height?: number
   model?: ItemModel
@@ -99,6 +101,7 @@ export default createModel(initState, {
     
     return { ...state, reportConfig: { ...reportConfig } }
   },
+
   selectItem (state, payload: { cid: string }) {
     if (state.selectedItem?.cid !== payload.cid) {
       const item = state.reportConfig.children.find(item => item.cid === payload.cid)
@@ -108,6 +111,7 @@ export default createModel(initState, {
     }
     return state
   },
+
   updateItemConfig (state, payload: { key: string, value: any }) {
     const { reportConfig, selectedItem } = state
     const { key, value } = payload
@@ -122,11 +126,11 @@ export default createModel(initState, {
      
     return { ...state, reportConfig: { ...reportConfig }, selectedItem: newSelectItem }
   },
+
   updateItem (state, payload: ItemConfig) {
     const { reportConfig } = state
     const { cid, ...args } = payload
     const item = reportConfig.children.find(item => item.cid === cid)
-    // 更新值但是不刷新页面，组件状态在组件内部维护
     if (item) {
       Object.keys(args).forEach((key) => {
         //@ts-ignore
@@ -135,17 +139,21 @@ export default createModel(initState, {
     }
     return state
   },
+
   updateTableItem (state, payload: { cid: string, tableState: TableModelState }) {
     const { cid, tableState } = payload
-    const { rulerColumns, rulerRows, values, tableWidth } = tableState
+    const { x, y, rulerColumns, rulerRows, values, tableWidth } = tableState
+
     const item = state.reportConfig.children.find(item => item.cid === cid) as TableItemConfig
     if (!item) {
       return state
     }
+    Number(x) >= 0 && (item.x = x)
+    Number(y) >= 0 && (item.y = y)
     item.rulerColumns = rulerColumns
     item.rulerRows = rulerRows
     item.values = values
     item.tableWidth = tableWidth
-    return state
+    return { ...state, reportConfig: { ...state.reportConfig } }
   },
 })

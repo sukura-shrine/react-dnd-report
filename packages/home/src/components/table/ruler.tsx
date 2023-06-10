@@ -122,33 +122,38 @@ const Ruler: React.FC<RulerProps> = (props) => {
   }
 
   const topRuler = useMemo(() => {
-    importDataInterface
+    const plusHanlde = (
+      <div className='ruler-top-plus' onClick={onClickTop}>
+        <PlusOutlined />
+      </div>
+    )
     const list = state.rulerColumns.map(({ loc, width }, i) => {
       return <HorizontalDragHandler key={i} loc={loc} width={width} onClick={onClickTopRuler} />
     })
     return (
       <div className='ruler-top'>
         {list}
-        <div className='ruler-top-plus' onClick={onClickTop}>
-          <PlusOutlined />
-        </div>
+        {importDataInterface ? null : plusHanlde}
       </div>
     )
-  }, [state.rulerColumns])
+  }, [importDataInterface, state.rulerColumns])
 
   const leftRuler = useMemo(() => {
+    const plusHanlde = (
+      <div className='ruler-left-plus' onClick={onClickleft}>
+        <PlusOutlined />
+      </div>
+    )
     const list = state.rulerRows.map(({ loc, height }, i) => {
       return <VerticalDragHandler key={i} loc={loc} height={height} onClick={onClickLeftRuler} />
     })
     return (
       <div className='ruler-left'>
         {list}
-        <div className='ruler-left-plus' onClick={onClickleft}>
-          <PlusOutlined />
-        </div>
+        {importDataInterface ? null : plusHanlde}
       </div>
     )
-  }, [state.rulerRows])
+  }, [importDataInterface, state.rulerRows])
 
   return (
     <div className="component-ruler">

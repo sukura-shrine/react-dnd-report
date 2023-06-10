@@ -4,14 +4,10 @@ import Draggable, { DraggableData, DraggableEvent, DraggableEventHandler } from 
 
 export default function App () {
   const handleStart: DraggableEventHandler = (e: DraggableEvent, data: DraggableData) => {
-    // console.log('---', data)
   }
   const handleDrag = (e: DraggableEvent, data: DraggableData) => {
-    // console.log(data)
   }
   const handleStop = (e: DraggableEvent, data: DraggableData) => {
-    console.log(e)
-    console.log('***', data)
   }
   return (
     <div style={{ width: 800, height: 800, background: '#eee' }}>

@@ -21,6 +21,8 @@ enum SelectedState {
 }
 
 export interface ModelState {
+  x?: number,
+  y?: number,
   error?: 'string'
   columnLength: number
   rowLength: number
@@ -52,10 +54,11 @@ export default createModel(initState, {
     if (!payload) {
       return { ...initState }
     }
-    const { rulerColumns, rulerRows, values, tableWidth } = payload
+    const { x, y, rulerColumns, rulerRows, values, tableWidth } = payload
     const columnLength = rulerColumns.length
     const rowLength = rulerRows.length
     const item = {
+      x: x || 0, y: y || 0,
       columnLength, rowLength,
       rulerColumns, rulerRows, values,
     }
@@ -70,16 +73,20 @@ export default createModel(initState, {
   createGrid (state, payload: { reportWidth: number }) {
     const { columnLength, rowLength } = state;
     const tableWidth = payload.reportWidth - 10 - columnLength - 1
+    
     const rulerColumns: RulerColum[] = []
     for (let i = 0; i < columnLength; i++) {
       rulerColumns.push({ type: 'horizontal', loc: i + 1, width: tableWidth / columnLength })
     }
+    
     const rulerRows: RulerRows[] = []
     for (let i = 0; i < rowLength; i++) {
       rulerRows.push({ type: 'vertical', loc: i + 1, height: 40 })
     }
+    
     const length = rulerColumns.length * rulerRows.length
     const values = [...Array(length)].map((v, i) => '')
+    
     return { ...state, rulerColumns, rulerRows, tableWidth, columnLength, values }
   },
 
@@ -158,5 +165,9 @@ export default createModel(initState, {
     state.values[dataIndex] = value
     
     return state
+  },
+
+  updatePosition (state, payload: { x: number, y: number }) {
+    return { ...state, ...payload }
   },
 })
