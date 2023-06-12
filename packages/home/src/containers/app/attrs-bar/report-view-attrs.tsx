@@ -17,16 +17,14 @@ const Attrs: React.FC = () => {
   }
 
   return (
-    <div className="attrs">
+    <div className="report-view-attrs">
       <div className="attr-block">
-        <Space>
-          <div>档案库</div>
-          <Select size="small" style={{ width: 120 }} value={selectedStory} onChange={onChange}>
-            {storyList.map(({ label, value }) => {
-              return <Select.Option key={value} value={value}>{label}</Select.Option>
-            })}
-          </Select> 
-        </Space>
+        <div>档案库</div>
+        <Select size="small" style={{ width: 120 }} value={selectedStory} onChange={onChange}>
+          {storyList.map(({ label, value }) => {
+            return <Select.Option key={value} value={value}>{label}</Select.Option>
+          })}
+        </Select> 
       </div>
     </div>
   )

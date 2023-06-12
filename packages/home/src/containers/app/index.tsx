@@ -7,6 +7,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import Tools from './tools'
 import DropCanvas from './drop-canvas'
 import ArrtsBar from './attrs-bar'
+import HorizontalLineAttrs from './attrs-bar/report-view-attrs'
 
 import GlobalContext from '../../global-context'
 import GlobalModel from '../../global-model'
@@ -45,6 +46,7 @@ export default function App (props: any) {
             <DndProvider backend={HTML5Backend}>
               <Tools onSave={() => console.log(state)}/>
               <DropCanvas />
+              <HorizontalLineAttrs />
             </DndProvider>  
           </div>
         </div>

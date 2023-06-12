@@ -61,7 +61,7 @@ const HorizontalLine: React.FC<TextProps> = (props) => {
   }
 
   return (
-    <DnDHandle showHandle position={position} onStop={onStop}>
+    <DnDHandle showHandle={props.cid === state.selectedItem?.cid} position={position} onStop={onStop}>
       <Resizable size={size} onResizeStop={onResizeStop}>
         <div className='horizontal-line-wrap' onClick={onClick}>
           <div className='horizontal-line'></div>

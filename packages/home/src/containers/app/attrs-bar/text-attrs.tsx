@@ -11,22 +11,10 @@ import IconCheckbox from '../../../components/icon-checkbox/icon-checkbox'
 import { ItemConfig } from '../../../global-model'
 import Align from './align'
 
-
-const alignList = [
-  'start start',
-  'start center',
-  'start end',
-  'center start',
-  'center center',
-  'center end',
-  'end start',
-  'end center',
-  'end end',
-]
-
 interface TextAttrsProps {
   selectedItem: ItemConfig
-  onChange: (itemConfig: ItemConfig) => void
+  onChange: (key: string, value: string) => void
+  // onChange: (itemConfig: ItemConfig) => void
 }
 export default function TextAttrs (props: TextAttrsProps) {
   const { selectedItem } = props
@@ -46,15 +34,15 @@ export default function TextAttrs (props: TextAttrsProps) {
     }
   }
   useEffect(() => {
-    const item = {
-      ...selectedItem,
-      fontSize,
-      fontWeight,
-      fontStyle,
-      textDecoration,
-      placeItems
-    }
-    props.onChange(item)
+    // const item = {
+    //   ...selectedItem,
+    //   fontSize,
+    //   fontWeight,
+    //   fontStyle,
+    //   textDecoration,
+    //   placeItems
+    // }
+    // props.onChange(item)
   }, [selectedItem.cid, fontSize, fontWeight, fontStyle, textDecoration, placeItems])
 
   return (

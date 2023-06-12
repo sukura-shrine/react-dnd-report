@@ -3,8 +3,15 @@ import { ItemConfig, ComponentType } from '../../../global-model'
 import GlobalContext from '../../../global-context'
 import Text from './text-attrs'
 import Table from './table-attrs'
+import HorizontalLine from './horizontal-line-attrs'
 
 import './style.less'
+
+const componentMap = {
+  [ComponentType.TEXT]: Text,
+  [ComponentType.TABLE]: Table,
+  [ComponentType.HORIZONTAL_LINE]: HorizontalLine,
+}
 
 const Attrs: React.FC = () => {
   const { state, dispatch } = useContext(GlobalContext)
@@ -22,12 +29,8 @@ const Attrs: React.FC = () => {
       return null
     }
     const { type } = selectedItem
-    if (type === ComponentType.TEXT) {
-      // return <Text selectedItem={selectedItem} onChange={onChange} />
-    }
-    if (type === ComponentType.TABLE) {
-      return <Table selectedItem={selectedItem} onChange={onChange} />
-    }
+    const Component = componentMap[type!]
+    return <Component selectedItem={selectedItem} onChange={onChange} />
   }, [selectedItem])
 
   return (

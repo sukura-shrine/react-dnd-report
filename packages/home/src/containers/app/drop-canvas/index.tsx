@@ -21,6 +21,7 @@ const componentTypeMap = {
 export default function DropCanvas (props: any) {
   const { state, dispatch } = useContext(GlobalContext)
   const [list, setList] = useState<React.ReactElement[]>([])
+  console.log(state)
 
   const [{ isOver }, drop] = useDrop(() => {
     return {
