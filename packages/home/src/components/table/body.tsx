@@ -3,6 +3,7 @@ import { fromEvent, map, switchMap, takeUntil, distinctUntilChanged } from 'rxjs
 import { TableBodyProps } from '../../components/types'
 import { RulerContext } from './context'
 import GlobalContext from '../../global-context'
+import { ItemModel } from '@/global-model'
 import classnames from 'classnames'
 
 import EditInput from '../edit-input'
@@ -14,6 +15,9 @@ const Body:React.FC<TableBodyProps> = (props) => {
   const { state: globalState } = useContext(GlobalContext)
   const { state, dispatch } = useContext(RulerContext)
   const { rowLength, columnLength, rulerColumns, rulerRows, selectedGrids, values } = state
+
+  const theStoryKeys = globalState.storyKeyMap[globalState.selectedStory]
+
 
   const tBody = useRef<HTMLDivElement>(null)
 
@@ -93,6 +97,7 @@ const Body:React.FC<TableBodyProps> = (props) => {
           selected = x >= points.startX && x <= points.endX && y >= points.startY && y <= points.endY
         }
         const val = values ? values[key] : ''
+        const model: ItemModel = importDataInterface ? ItemModel.DATA : ItemModel.INPUT
         
         const classname = classnames('table-body-grid', {
           'grid-selected': selected,
@@ -101,7 +106,12 @@ const Body:React.FC<TableBodyProps> = (props) => {
         
         grids.push(
           <div key={key} className={classname} data-index={key}>
-            <EditInput value={val} fieldsConfig={globalState.fieldsConfig} style={childStyles} onChange={onEdit.bind(this, key)} />
+            <EditInput
+              value={val}
+              model={model}
+              fieldsConfig={theStoryKeys}
+              style={childStyles}
+              onChange={onEdit.bind(this, key)} />
           </div>
         )
       }

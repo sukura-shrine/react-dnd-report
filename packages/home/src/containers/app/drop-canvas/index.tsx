@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useContext, useMemo } from 'react'
 import { useDrop } from 'react-dnd'
-import Text from '../../../components/text'
+import Text from '@/components/text'
 // import Image from '../../../components/image'
-import Table from '../../../components/table'
-import GlobalContext from '../../../global-context'
-import { ComponentType } from '../../../global-model'
+import Table from '@/components/table'
+import HorizontalLine from '@/components/horizontal-line'
+import GlobalContext from '@/global-context'
+import { ComponentType } from '@/global-model'
 
 import './style.less'
 
@@ -12,6 +13,9 @@ const componentTypeMap = {
   'text': Text,
   // 'image': Image,
   'table': Table,
+  'horizontal-line': HorizontalLine,
+  'vertical-line': '',
+  'rectangle': '',
 }
 
 export default function DropCanvas (props: any) {
@@ -20,7 +24,7 @@ export default function DropCanvas (props: any) {
 
   const [{ isOver }, drop] = useDrop(() => {
     return {
-      accept: ['text', 'image', 'table'],
+      accept: ['text', 'image', 'table', 'horizontal-line'],
       drop: (item, monitor) => {
         const type = monitor.getItemType() as ComponentType
         if (type) {

@@ -19,7 +19,8 @@ const Table:React.FC<TableBodyProps> = (props) => {
   useEffect(() => {
     if (!props.rulerColumns) {
       const { reportWidth } = globalState
-      dispatch({ type: 'createGrid', payload: { reportWidth } })
+      const { x, y } = props
+      dispatch({ type: 'createGrid', payload: { reportWidth, x, y } })
     } else {
       dispatch({
         type: 'tableInit',
@@ -63,11 +64,12 @@ const Table:React.FC<TableBodyProps> = (props) => {
   }, [props])
 
   const fixed = !!(props.importDataInterface && props.parentId)
-  const position = { x: state.x || 0, y: state.y || 0 }
+  const position = { x: props.x || 0, y: props.y || 0 }
+  const showHandle = globalState.selectedItem?.cid === props.cid
 
   return (
     <RulerContext.Provider value={{ state, dispatch }}>
-      <DnDHandle fixed={fixed} position={position} onStop={onStop}>
+      <DnDHandle fixed={fixed} showHandle={showHandle} position={position} onStop={onStop}>
         <div className='component-table' style={styles} onClick={onClick}>
           <Ruler parentId={props.parentId} importDataInterface={props.importDataInterface}>
             <Body {...props} />

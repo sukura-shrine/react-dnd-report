@@ -1,14 +1,18 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react'
+import React, { useState, useRef, useEffect, useMemo, useContext } from 'react'
 import { fromEvent, exhaustMap, interval, takeUntil } from 'rxjs'
 import { Select } from 'antd'
 import { EditInputProps } from '../../components/types'
 import { ItemModel } from '../../global-model'
+import GlobalContext from '@/global-context'
+
 import './style.less'
 
 const { Option } = Select
 
 const EditInput:React.FC<EditInputProps> = (props) => {
   const { model, fieldsConfig } = props
+  const { state, dispatch } = useContext(GlobalContext)
+
   const ref = useRef<HTMLDivElement>(null)
   const [edited, setEdited] = useState(false)
   const [value, setValue] = useState(props.value)
@@ -36,7 +40,8 @@ const EditInput:React.FC<EditInputProps> = (props) => {
   }
   const onSelectChange = (value: string) => {
     setValue(value)
-    onChange()
+    setEdited(false)
+    props.onChange && props.onChange(value as string)
   }
 
   const children = useMemo(() => {
@@ -45,9 +50,9 @@ const EditInput:React.FC<EditInputProps> = (props) => {
     }
     if (model === ItemModel.DATA) {
       return (
-        <Select style={{ minWidth: 120 }} onChange={onSelectChange}>
-          {fieldsConfig.map(({ key, title }) => {
-            return <Option key={key} value={key}>{title}</Option>
+        <Select value={value} style={{ minWidth: 120 }} onChange={onSelectChange}>
+          {fieldsConfig.map(({ value, label }) => {
+            return <Option key={value} value={value}>{label}</Option>
           })}
         </Select>
       )

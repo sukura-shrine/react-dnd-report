@@ -19,21 +19,4 @@ function render (props: AppProp) {
   )
 }
 
-if (!qiankunWindow.__POWERED_BY_QIANKUN__) {
-  render({})
-}
-
-renderWithQiankun({
-  mount(props) {
-    console.log('mount')
-    render(props)
-  },
-  bootstrap() {
-    console.log('bootstrap')
-  },
-  unmount() {
-    root.unmount()
-  },
-  update() {
-  }
-})
+render({})

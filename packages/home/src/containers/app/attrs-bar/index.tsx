@@ -13,13 +13,13 @@ export default function Tools (props: any) {
   const items: TabsProps['items'] = [
     {
       key: '1',
-      label: '属性',
-      children: <ComponentAttrs />,
+      label: '视图',
+      children: <ReportViewAttrs />,
     },
     {
       key: '2',
-      label: '视图',
-      children: <ReportViewAttrs />,
+      label: '属性',
+      children: <ComponentAttrs />,
     },
   ]
 

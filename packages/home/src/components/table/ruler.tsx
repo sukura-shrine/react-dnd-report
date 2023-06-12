@@ -62,8 +62,9 @@ export const VerticalDragHandler: React.FC<VerticalProps> = ({ loc, height, onCl
 }
 
 const Ruler: React.FC<RulerProps> = (props) => {
-  const { importDataInterface } = props
+  const { importDataInterface, parentId } = props
   const { state, dispatch } = useContext(RulerContext)
+
   const { type, loc, width, height } = useDragLayer(monitor => {
     const item = monitor.getItem()
     const offset = monitor.getSourceClientOffset()
@@ -122,6 +123,10 @@ const Ruler: React.FC<RulerProps> = (props) => {
   }
 
   const topRuler = useMemo(() => {
+    if (parentId) {
+      return null
+    }
+  
     const plusHanlde = (
       <div className='ruler-top-plus' onClick={onClickTop}>
         <PlusOutlined />
@@ -130,6 +135,7 @@ const Ruler: React.FC<RulerProps> = (props) => {
     const list = state.rulerColumns.map(({ loc, width }, i) => {
       return <HorizontalDragHandler key={i} loc={loc} width={width} onClick={onClickTopRuler} />
     })
+  
     return (
       <div className='ruler-top'>
         {list}
@@ -147,6 +153,7 @@ const Ruler: React.FC<RulerProps> = (props) => {
     const list = state.rulerRows.map(({ loc, height }, i) => {
       return <VerticalDragHandler key={i} loc={loc} height={height} onClick={onClickLeftRuler} />
     })
+
     return (
       <div className='ruler-left'>
         {list}

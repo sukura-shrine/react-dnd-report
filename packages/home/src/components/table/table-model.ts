@@ -70,7 +70,7 @@ export default createModel(initState, {
     return { ...state, ...item }
   },
 
-  createGrid (state, payload: { reportWidth: number }) {
+  createGrid (state, payload: { reportWidth: number, x: number, y: number }) {
     const { columnLength, rowLength } = state;
     const tableWidth = payload.reportWidth - 10 - columnLength - 1
     
@@ -87,7 +87,7 @@ export default createModel(initState, {
     const length = rulerColumns.length * rulerRows.length
     const values = [...Array(length)].map((v, i) => '')
     
-    return { ...state, rulerColumns, rulerRows, tableWidth, columnLength, values }
+    return { ...state, rulerColumns, rulerRows, tableWidth, columnLength, values, x: payload.x, y: payload.y }
   },
 
   addColumn (state) {

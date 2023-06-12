@@ -1,16 +1,19 @@
 import { createModel } from "./utils/create-context"
 import { ModelState as TableModelState, RulerColum, RulerRows } from '@/components/table/table-model'
-import { isButtonElement } from "react-router-dom/dist/dom"
+import { story, storyKeyMap } from './data'
 
 export enum ItemModel {
   DATA = 'data',
   INPUT = 'input',
+  SELECT = 'select',
 }
 export enum ComponentType {
   TEXT = 'text',
   // IMAGE = 'image',
   TABLE = 'table',
+  HORIZONTAL_LINE = 'horizontal-line'
 }
+
 
 export interface ItemConfig {
   cid: string
@@ -44,7 +47,7 @@ export interface TableItemConfig extends ItemConfig {
 }
 
 export interface FieldConfig {
-  key: string, title: string
+  value: string, label: string
 }
 
 export interface ModelState {
@@ -54,17 +57,21 @@ export interface ModelState {
     children: (ItemConfig | TableItemConfig)[]
   }
   selectedItem: ItemConfig | null
+  storyList: { label: string, value: string }[]
+  storyKeyMap: { [key: string]: { label: string, value: string }[] }
+  selectedStory: string
 }
 
 export const initState: ModelState = {
   reportWidth: 0,
-  fieldsConfig: [
-  ],
+  fieldsConfig: [],
   reportConfig: {
-    children: [
-    ],
+    children: [],
   },
-  selectedItem: null
+  selectedItem: null,
+  storyList: story,
+  storyKeyMap,
+  selectedStory: story[0].value,
 }
 
 export default createModel(initState, {
@@ -79,11 +86,14 @@ export default createModel(initState, {
   },
   addItem (state, payload: { type: ComponentType, defaultSize: { width: number } }) {
     const { reportWidth, reportConfig } = state
-    const parentItem = reportConfig.children.find(item => {
-      if (item.type === ComponentType.TABLE && !item.parentId) {
-        return true
-      }
-    })
+    let parentItem
+    if (payload.type === ComponentType.TABLE) {
+      parentItem = reportConfig.children.find(item => {
+        if (item.type === ComponentType.TABLE && !item.parentId) {
+          return true
+        }
+      })
+    }
 
     const item: ItemConfig = {
       cid: String(Date.now()),
@@ -93,12 +103,23 @@ export default createModel(initState, {
       width: reportWidth,
       model: ItemModel.INPUT,
       fontSize: 14,
+      x: 0,
+      y: 0
     }
+
+    if (parentItem) {
+      const { x, y, rulerRows } = (parentItem as TableItemConfig)
+      item.x = x
+      item.y = (y || 0) + rulerRows.map(item => item.height).reduce((a, b) => a + b, 0)
+    }
+
     if (item.type === ComponentType.TEXT) {
       item.height = 40
+    } else if (item.type === ComponentType.HORIZONTAL_LINE) {
+
     }
     reportConfig.children.push(item)
-    
+
     return { ...state, reportConfig: { ...reportConfig } }
   },
 
@@ -141,19 +162,36 @@ export default createModel(initState, {
   },
 
   updateTableItem (state, payload: { cid: string, tableState: TableModelState }) {
+    const { reportConfig } = state
     const { cid, tableState } = payload
     const { x, y, rulerColumns, rulerRows, values, tableWidth } = tableState
 
-    const item = state.reportConfig.children.find(item => item.cid === cid) as TableItemConfig
-    if (!item) {
+    const parentTable = reportConfig.children.find(item => !item.parentId) as TableItemConfig
+    const needUpdateTable = reportConfig.children.find(item => item.cid === cid) as TableItemConfig
+    if (!needUpdateTable) {
       return state
     }
-    Number(x) >= 0 && (item.x = x)
-    Number(y) >= 0 && (item.y = y)
-    item.rulerColumns = rulerColumns
-    item.rulerRows = rulerRows
-    item.values = values
-    item.tableWidth = tableWidth
-    return { ...state, reportConfig: { ...state.reportConfig } }
+    Number(x) >= 0 && (needUpdateTable.x = x)
+    Number(y) >= 0 && (needUpdateTable.y = y)
+    needUpdateTable.rulerColumns = rulerColumns
+    needUpdateTable.rulerRows = rulerRows
+    needUpdateTable.values = values
+    needUpdateTable.tableWidth = tableWidth
+
+    let height = rulerRows.map(item => item.height).reduce((a, b) => a + b, 0)
+    reportConfig.children.forEach((item) => {
+      if (item.type !==ComponentType.TABLE || item.parentId !== parentTable.cid) {
+        return false
+      }
+      const childTable = item as TableItemConfig
+      childTable.x = x
+      childTable.y = (parentTable.y || 0) + height
+      height += rulerRows.map(item => item.height).reduce((a, b) => a + b, 0)
+    })
+    return { ...state, reportConfig: { ...reportConfig } }
+  },
+
+  selectStory (state, payload: { key: string }) {
+    return { ...state, selectedStory: payload.key }
   },
 })

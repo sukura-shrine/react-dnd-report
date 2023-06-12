@@ -6,16 +6,25 @@ import './style.less'
 
 const Attrs: React.FC = () => {
   const { state, dispatch } = useContext(GlobalContext)
-  const { selectedItem } = state
+  const { selectedStory, storyList, storyKeyMap } = state
+  const story = storyKeyMap[selectedStory]
+
+  const onChange = (value: string) => {
+    dispatch({
+      type: 'selectStory',
+      payload: { key: value }
+    })
+  }
 
   return (
     <div className="attrs">
       <div className="attr-block">
         <Space>
           <div>档案库</div>
-          <Select size="small" style={{ width: 120 }}>
-            <Select.Option>档案库1</Select.Option>
-            <Select.Option>档案库2</Select.Option>
+          <Select size="small" style={{ width: 120 }} value={selectedStory} onChange={onChange}>
+            {storyList.map(({ label, value }) => {
+              return <Select.Option key={value} value={value}>{label}</Select.Option>
+            })}
           </Select> 
         </Space>
       </div>

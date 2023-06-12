@@ -7,46 +7,44 @@ import './index.less'
 export interface DnDHandleProps {
   className?: string
   fixed?: boolean
+  showHandle?: boolean
   position?: { x: number, y: number }
   children?: React.ReactNode
   onStop?: DraggableEventHandler
 }
 
 export default function DnDHandle (props: DnDHandleProps) {
-  const { fixed, position } = props
+  const { fixed, showHandle, position } = props
 
   const onStop: DraggableEventHandler = (event, data) => {
     props.onStop && props.onStop(event, data)
   }
 
-  const children = useMemo(() => {
-    const styles = fixed && position ? { left: position.x, top: position.y } : undefined
-    const children =  (
-      <div className="dnd-handle-wrap" style={styles}>
-        <div className="dnd-tools">
-          <DragOutlined className="dnd-handle" />
-          <CloseOutlined />
-        </div>
-        {props.children}
-      </div>
-    )
+  const handle = (
+    <div className="dnd-tools">
+      {fixed ? null : <DragOutlined className="dnd-handle" />}
+      <CloseOutlined />
+    </div>
+  )
 
-    if (fixed) {
-      return children
-    }
-    return (
-      <Draggable
-        axis="both"
-        handle=".dnd-handle"
-        position={props.position}
-        grid={[5, 5]}
-        scale={1}
-        onStop={onStop}
-      >
-        {children}
-      </Draggable>
-    )
-  }, [fixed, position])
+  const children =  (
+    <div className="dnd-handle-wrap">
+      {showHandle ? handle : null}
+      {props.children}
+    </div>
+  )
 
-  return children
+  return (
+    <Draggable
+      axis="both"
+      handle=".dnd-handle"
+      position={position}
+      disabled={fixed}
+      grid={[5, 5]}
+      scale={1}
+      onStop={onStop}
+    >
+      {children}
+    </Draggable>
+  )
 }
