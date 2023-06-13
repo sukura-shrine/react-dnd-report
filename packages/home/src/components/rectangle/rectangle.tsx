@@ -27,7 +27,7 @@ const Rectangle: React.FC<TextProps> = (props) => {
   const onResizeStop = (e, direction, ref, d) => {
     const newSize = {
       width: size.width + d.width,
-      height: size.width + d.height,
+      height: size.height + d.height,
     }
     dispatch({
       type: 'updateItem',

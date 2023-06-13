@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import IconCheckbox from '../../../components/icon-checkbox/icon-checkbox'
+import IconCheckbox from '@/components/icon-checkbox/icon-checkbox'
 
 const alignList = [
   'start start',
@@ -14,7 +14,7 @@ const alignList = [
 ]
 
 interface AlignProps {
-  value: string
+  value?: string
   onClick: (value: string) => void
 }
 export default function Align (props: AlignProps) {

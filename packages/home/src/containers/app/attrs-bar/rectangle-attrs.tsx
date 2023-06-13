@@ -8,7 +8,6 @@ import {
 } from '@ant-design/icons'
 
 import { ItemConfig } from '@/global-model'
-import Align from './align'
 
 interface RectangleAttrsProps {
   selectedItem: ItemConfig

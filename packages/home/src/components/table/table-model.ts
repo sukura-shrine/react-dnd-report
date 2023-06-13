@@ -74,8 +74,7 @@ export default createModel(initState, {
   createGrid (state, payload: { width: number, x: number, y: number, parentConfig: TableItemConfig }) {
     const { columnLength, rowLength } = state;
     const width = payload.width - 10 - columnLength - 1
-    
-    
+
     const rulerColumns: RulerColum[] = []
     if (payload.parentConfig) {
       payload.parentConfig.rulerColumns.forEach(item => {

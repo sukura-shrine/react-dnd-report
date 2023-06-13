@@ -10,7 +10,7 @@ import {
 import IconCheckbox from '../../../components/icon-checkbox/icon-checkbox'
 import SpaceLine from '@/components/space-line'
 import { ItemConfig } from '../../../global-model'
-import Align from './align'
+import Align from '@/components/align-checkbox'
 
 interface TableAttrsProps {
   selectedItem: ItemConfig
@@ -52,20 +52,20 @@ export default function TableAttrs (props: TableAttrsProps) {
         </Space>
         <Space>
           <IconCheckbox
-            checked={!!fontWeight}
-            onCheck={(checked) => onFontStyleChange('bold', checked)}
+            checked={!!selectedItem.fontWeight}
+            onCheck={(checked) => onChange('fontWeight', checked ? 'bold' : undefined)}
           >
             <BoldOutlined />
           </IconCheckbox>
           <IconCheckbox
-            checked={!!fontStyle}
-            onCheck={(checked) => onFontStyleChange('italic', checked)}
+            checked={!!selectedItem.fontStyle}
+            onCheck={(checked) => onChange('fontStyle', checked ? 'italic' : undefined)}
           >
             <ItalicOutlined />
           </IconCheckbox>
           <IconCheckbox
-            checked={!!textDecoration}
-            onCheck={(checked) => onFontStyleChange('underline', checked)}
+            checked={!!selectedItem.textDecoration}
+            onCheck={(checked) => onChange('textDecoration', checked ? 'underline' : undefined)}
           >
             <UnderlineOutlined />
           </IconCheckbox>
@@ -73,7 +73,7 @@ export default function TableAttrs (props: TableAttrsProps) {
         </Space>
       </div>
       <SpaceLine />
-      <Align value={selectedItem.fontWeight as string} onClick={v => onChange('placeItems', v)} />
+      <Align value={selectedItem.fontWeight} onClick={v => onChange('placeItems', v)} />
       <SpaceLine />
       <div className="attr-block">
         <Space>
