@@ -7,7 +7,9 @@ import {
   BorderInnerOutlined,
 } from '@ant-design/icons'
 
-import IconCheckbox from '../../../components/icon-checkbox/icon-checkbox'
+import { Checkbox } from 'antd'
+import IconCheckbox from '@/components/icon-checkbox/icon-checkbox'
+import SpaceLine from '@/components/space-line'
 import { ItemConfig } from '../../../global-model'
 import Align from './align'
 
@@ -44,13 +46,26 @@ export default function TextAttrs (props: TextAttrsProps) {
     // }
     // props.onChange(item)
   }, [selectedItem.cid, fontSize, fontWeight, fontStyle, textDecoration, placeItems])
+  
+  const onChange = (key: string, value: any) => {
+    props.onChange && props.onChange(key, value)
+  }
 
   return (
-    <div className='attr-text'>
-      <Space>
-        <div>字体</div>
-        <div><InputNumber size="small" min={12} max={100} defaultValue={fontSize} onChange={v => setFontSize(Number(v))} /></div>
-        <Space size={4}>
+    <div style={{ display: 'flex', gap: 8 }}>
+      <div className="attr-block">
+        <Space>
+          <div>字体</div>
+          <InputNumber
+            size="small"
+            min={12}
+            max={100}
+            value={selectedItem.fontSize}
+            style={{ width: 68 }}
+            onChange={v => onChange('fontSize', v)}
+          />
+        </Space>
+        <Space>
           <IconCheckbox
             checked={!!fontWeight}
             onCheck={(checked) => onFontStyleChange('bold', checked)}
@@ -69,12 +84,20 @@ export default function TextAttrs (props: TextAttrsProps) {
           >
             <UnderlineOutlined />
           </IconCheckbox>
+          {/* <BorderInnerOutlined /> */}
         </Space>
-        <BorderInnerOutlined />
-        <div>对齐</div>
-        <Align value={placeItems} onClick={v => setPlaceItems(v)} />
-        {/* <Input size="small" value={placeItems} onChange={e => setPlaceItems(e.target.value)} /> */}
-      </Space>
+      </div>
+      <SpaceLine />
+      <Align value={placeItems} onClick={v => setPlaceItems(v)} />
+      <div className="attr-block">
+        <Space>
+          <div>接入数据接口</div>
+          <Checkbox
+            checked={selectedItem.importDataInterface}
+            onChange={e => onChange('importDataInterface', e.target.checked)}
+          />
+        </Space>
+      </div>
     </div>
   )
 }

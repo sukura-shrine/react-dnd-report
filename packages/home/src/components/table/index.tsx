@@ -18,9 +18,19 @@ const Table:React.FC<TableBodyProps> = (props) => {
 
   useEffect(() => {
     if (!props.rulerColumns) {
-      const { reportWidth } = globalState
-      const { x, y } = props
-      dispatch({ type: 'createGrid', payload: { reportWidth, x, y } })
+      const { parentId, x, y, width } = props
+      // @ts-ignore
+      const parent = globalState.reportConfig.children.find(item => item.cid === parentId)
+      const payload = {
+        width,
+        x,
+        y
+      }
+      if (parent) {
+        // @ts-ignore
+        payload.parentConfig = parent
+      }
+      dispatch({ type: 'createGrid', payload })
     } else {
       dispatch({
         type: 'tableInit',

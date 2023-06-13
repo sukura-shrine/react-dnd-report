@@ -1,7 +1,8 @@
 import React from 'react'
-import { DragText, DragTable, DragHorizontalLine } from '@/components/drag-components'
+import { DragText, DragTable, DragHorizontalLine, DragRecangle } from '@/components/drag-components'
 import {
-  TableOutlined
+  TableOutlined,
+  BorderOutlined,
 } from '@ant-design/icons';
 import './style.less'
 
@@ -13,6 +14,7 @@ export default function Tools (props: any) {
         <DragText>文</DragText>
           {/* <DragImg>Image</DragImg> */}
         <DragTable><TableOutlined /></DragTable>
+        <DragRecangle><BorderOutlined /></DragRecangle>
         <DragHorizontalLine>一</DragHorizontalLine>
       </div>
     </div>

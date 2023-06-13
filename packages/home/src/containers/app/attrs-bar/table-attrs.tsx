@@ -69,14 +69,11 @@ export default function TableAttrs (props: TableAttrsProps) {
           >
             <UnderlineOutlined />
           </IconCheckbox>
-          <BorderInnerOutlined />
+          {/* <BorderInnerOutlined /> */}
         </Space>
       </div>
       <SpaceLine />
-      <Space>
-        <div>对齐</div> 
-        <Align value={selectedItem.fontWeight as string} onClick={v => onChange('placeItems', v)} />
-      </Space>
+      <Align value={selectedItem.fontWeight as string} onClick={v => onChange('placeItems', v)} />
       <SpaceLine />
       <div className="attr-block">
         <Space>

@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react'
-import { Space, Select } from 'antd'
+import { Space, Select, Form } from 'antd'
 import GlobalContext from '../../../global-context'
 
 import './style.less'
@@ -18,14 +18,15 @@ const Attrs: React.FC = () => {
 
   return (
     <div className="report-view-attrs">
-      <div className="attr-block">
-        <div>档案库</div>
-        <Select size="small" style={{ width: 120 }} value={selectedStory} onChange={onChange}>
-          {storyList.map(({ label, value }) => {
-            return <Select.Option key={value} value={value}>{label}</Select.Option>
-          })}
-        </Select> 
-      </div>
+      <Form>
+        <Form.Item label="档案库">
+          <Select size="small" style={{ width: 120 }} value={selectedStory} onChange={onChange}>
+            {storyList.map(({ label, value }) => {
+              return <Select.Option key={value} value={value}>{label}</Select.Option>
+            })}
+          </Select>
+        </Form.Item>
+      </Form>
     </div>
   )
 }

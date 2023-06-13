@@ -1,9 +1,10 @@
 import React, { useContext, useMemo } from 'react'
-import { ItemConfig, ComponentType } from '../../../global-model'
-import GlobalContext from '../../../global-context'
+import { ComponentType } from '@/global-model'
+import GlobalContext from '@/global-context'
 import Text from './text-attrs'
 import Table from './table-attrs'
 import HorizontalLine from './horizontal-line-attrs'
+import RectangleAttrs from './rectangle-attrs'
 
 import './style.less'
 
@@ -11,6 +12,7 @@ const componentMap = {
   [ComponentType.TEXT]: Text,
   [ComponentType.TABLE]: Table,
   [ComponentType.HORIZONTAL_LINE]: HorizontalLine,
+  [ComponentType.RECTANGLE]: RectangleAttrs,
 }
 
 const Attrs: React.FC = () => {

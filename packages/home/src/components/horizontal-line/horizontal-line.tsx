@@ -48,6 +48,13 @@ const HorizontalLine: React.FC<TextProps> = (props) => {
     setSize(newSize)
   }
 
+  const onClose = () => {
+    dispatch({
+      type: 'delItem',
+      payload: { cid: props.cid }
+    })
+  }
+
   const onStop = (event: any, data: { x: number, y: number }) => {
     const position = { x: data.x, y: data.y }
     setPosition(position)
@@ -61,7 +68,7 @@ const HorizontalLine: React.FC<TextProps> = (props) => {
   }
 
   return (
-    <DnDHandle showHandle={props.cid === state.selectedItem?.cid} position={position} onStop={onStop}>
+    <DnDHandle showHandle={props.cid === state.selectedItem?.cid} position={position} onClose={onClose} onStop={onStop}>
       <Resizable size={size} onResizeStop={onResizeStop}>
         <div className='horizontal-line-wrap' onClick={onClick}>
           <div className='horizontal-line'></div>

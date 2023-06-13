@@ -1,4 +1,5 @@
 import { createModel } from "../../utils/create-context"
+import { TableItemConfig } from "@/global-model"
 
 export interface RulerItem {
   type: 'horizontal' | 'vertical'
@@ -26,7 +27,7 @@ export interface ModelState {
   error?: 'string'
   columnLength: number
   rowLength: number
-  tableWidth: number
+  width: number
   rulerColumns: RulerColum[]
   rulerRows: RulerRows[]
   values: string[]
@@ -40,7 +41,7 @@ export interface ModelState {
 export const initState: ModelState = {
   columnLength: 3,
   rowLength: 1,
-  tableWidth: 0,
+  width: 0,
   rulerColumns: [],
   rulerRows: [],
   values: [],
@@ -54,7 +55,7 @@ export default createModel(initState, {
     if (!payload) {
       return { ...initState }
     }
-    const { x, y, rulerColumns, rulerRows, values, tableWidth } = payload
+    const { x, y, rulerColumns, rulerRows, values, width } = payload
     const columnLength = rulerColumns.length
     const rowLength = rulerRows.length
     const item = {
@@ -62,21 +63,28 @@ export default createModel(initState, {
       columnLength, rowLength,
       rulerColumns, rulerRows, values,
     }
-    if (tableWidth) {
+    if (width) {
       // @ts-ignore
-      item.tableWidth = tableWidth
+      item.width = width
     }
 
     return { ...state, ...item }
   },
 
-  createGrid (state, payload: { reportWidth: number, x: number, y: number }) {
+  createGrid (state, payload: { width: number, x: number, y: number, parentConfig: TableItemConfig }) {
     const { columnLength, rowLength } = state;
-    const tableWidth = payload.reportWidth - 10 - columnLength - 1
+    const width = payload.width - 10 - columnLength - 1
+    
     
     const rulerColumns: RulerColum[] = []
-    for (let i = 0; i < columnLength; i++) {
-      rulerColumns.push({ type: 'horizontal', loc: i + 1, width: tableWidth / columnLength })
+    if (payload.parentConfig) {
+      payload.parentConfig.rulerColumns.forEach(item => {
+        rulerColumns.push({ ...item })
+      })
+    } else {
+      for (let i = 0; i < columnLength; i++) {
+        rulerColumns.push({ type: 'horizontal', loc: i + 1, width: width / columnLength })
+      }
     }
     
     const rulerRows: RulerRows[] = []
@@ -87,11 +95,11 @@ export default createModel(initState, {
     const length = rulerColumns.length * rulerRows.length
     const values = [...Array(length)].map((v, i) => '')
     
-    return { ...state, rulerColumns, rulerRows, tableWidth, columnLength, values, x: payload.x, y: payload.y }
+    return { ...state, rulerColumns, rulerRows, width, columnLength, values, x: payload.x, y: payload.y }
   },
 
   addColumn (state) {
-    const { tableWidth, rulerColumns, columnLength, values } = state
+    const { width: tableWidth, rulerColumns, columnLength, values } = state
     const width = tableWidth / (rulerColumns.length + 1)
 
     const columns: RulerColum[] = [...rulerColumns, { type: 'horizontal', loc: rulerColumns.length, width }]

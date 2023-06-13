@@ -1,21 +1,18 @@
 import React, { useContext, useState, useMemo } from 'react'
 import { Resizable } from 're-resizable'
-import Draggable, { DraggableData, DraggableEvent, DraggableEventHandler } from 'react-draggable'
 
-import EditInput from '../../components/edit-input'
-import { TextProps } from '../../components/types'
+import { TextProps } from '../types'
 import GlobalContext from '../../global-context'
 import DnDHandle from '../dnd-handle'
 import './style.less'
 
-const Text: React.FC<TextProps> = (props) => {
+const Rectangle: React.FC<TextProps> = (props) => {
   const { state, dispatch } = useContext(GlobalContext)
-  const { fieldsConfig } = state
   const [position, setPosition] = useState({ x: props.x || 0, y: props.y || 0 })
 
   const [size, setSize] = useState({
-    width: props.width || 80,
-    height: props.height || 20,
+    width: props.width!,
+    height: props.height!,
   })
 
   const onClick = () => {
@@ -26,20 +23,11 @@ const Text: React.FC<TextProps> = (props) => {
       }
     })
   }
-  const onChange = (value: string) => {
-    dispatch({
-      type: 'updateItem',
-      payload: {
-        cid: props.cid,
-        value
-      }
-    })
-  }
   // @ts-ignore
   const onResizeStop = (e, direction, ref, d) => {
     const newSize = {
       width: size.width + d.width,
-      height: size.height + d.height
+      height: size.width + d.height,
     }
     dispatch({
       type: 'updateItem',
@@ -70,24 +58,14 @@ const Text: React.FC<TextProps> = (props) => {
     })
   }
 
-  const styles = useMemo(() => {
-    const { fontSize, fontWeight, fontStyle, textDecoration, placeItems } = props
-    return {
-      border: '1px solid',
-      borderColor: state.selectedItem?.cid === props.cid ? '#a3d8fb' : undefined,
-      cursor: 'move',
-      fontSize, fontWeight, fontStyle, textDecoration, placeItems,
-    }
-  }, [props, state.selectedItem])
-
   return (
-    <DnDHandle position={position} showHandle={props.cid === state.selectedItem?.cid} onClose={onClose} onStop={onStop}>
+    <DnDHandle showHandle={props.cid === state.selectedItem?.cid} position={position} onClose={onClose} onStop={onStop}>
       <Resizable size={size} onResizeStop={onResizeStop}>
-        <div className='componse-text' onClick={onClick}>
-          <EditInput value={props.value} model={props.model} fieldsConfig={fieldsConfig} style={styles} onChange={onChange} />
+        <div className='rect-wrap' onClick={onClick}>
+          <div className='horizontal-line'></div>
         </div>
       </Resizable>
     </DnDHandle>
   )
 }
-export default Text
+export default Rectangle

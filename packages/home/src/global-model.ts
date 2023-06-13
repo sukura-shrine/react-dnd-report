@@ -11,7 +11,8 @@ export enum ComponentType {
   TEXT = 'text',
   // IMAGE = 'image',
   TABLE = 'table',
-  HORIZONTAL_LINE = 'horizontal-line'
+  HORIZONTAL_LINE = 'horizontal-line',
+  RECTANGLE = 'rectangle',
 }
 
 
@@ -100,23 +101,30 @@ export default createModel(initState, {
       parentId: parentItem?.cid,
       sequence: reportConfig.children.length,
       type: payload.type,
-      width: reportWidth,
+      width: 100,
+      height: 0,
       model: ItemModel.INPUT,
       fontSize: 14,
       x: 0,
       y: 0
     }
 
-    if (parentItem) {
-      const { x, y, rulerRows } = (parentItem as TableItemConfig)
-      item.x = x
-      item.y = (y || 0) + rulerRows.map(item => item.height).reduce((a, b) => a + b, 0)
-    }
-
     if (item.type === ComponentType.TEXT) {
       item.height = 40
     } else if (item.type === ComponentType.HORIZONTAL_LINE) {
+      item.height = 2
+    } else if (item.type === ComponentType.TABLE) {
+      item.width = reportWidth
 
+      if (parentItem) {
+        const { x, y, rulerRows } = (parentItem as TableItemConfig)
+        item.x = x
+        item.y = (y || 0) + rulerRows.map(item => item.height).reduce((a, b) => a + b, 0)
+
+        item.width = parentItem.width
+      }
+    } else if (item.type === ComponentType.RECTANGLE) {
+      item.height = 80
     }
     reportConfig.children.push(item)
 
@@ -164,7 +172,7 @@ export default createModel(initState, {
   updateTableItem (state, payload: { cid: string, tableState: TableModelState }) {
     const { reportConfig } = state
     const { cid, tableState } = payload
-    const { x, y, rulerColumns, rulerRows, values, tableWidth } = tableState
+    const { x, y, rulerColumns, rulerRows, values, width } = tableState
 
     const parentTable = reportConfig.children.find(item => !item.parentId) as TableItemConfig
     const needUpdateTable = reportConfig.children.find(item => item.cid === cid) as TableItemConfig
@@ -176,7 +184,7 @@ export default createModel(initState, {
     needUpdateTable.rulerColumns = rulerColumns
     needUpdateTable.rulerRows = rulerRows
     needUpdateTable.values = values
-    needUpdateTable.tableWidth = tableWidth
+    needUpdateTable.width = width
 
     let height = rulerRows.map(item => item.height).reduce((a, b) => a + b, 0)
     reportConfig.children.forEach((item) => {
