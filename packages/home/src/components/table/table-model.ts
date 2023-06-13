@@ -93,7 +93,7 @@ export default createModel(initState, {
   addColumn (state) {
     const { tableWidth, rulerColumns, columnLength, values } = state
     const width = tableWidth / (rulerColumns.length + 1)
-    rulerColumns.forEach(item => item.width = width)
+
     const columns: RulerColum[] = [...rulerColumns, { type: 'horizontal', loc: rulerColumns.length, width }]
 
     const list: string[] = []

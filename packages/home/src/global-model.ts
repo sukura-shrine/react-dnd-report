@@ -191,6 +191,13 @@ export default createModel(initState, {
     return { ...state, reportConfig: { ...reportConfig } }
   },
 
+  delItem (state, payload: { cid: string }) {
+    const { reportConfig } = state
+    reportConfig.children = reportConfig.children.filter(item => item.cid !== payload.cid)
+
+    return { ...state, reportConfig: { ...reportConfig } }
+  },
+
   selectStory (state, payload: { key: string }) {
     return { ...state, selectedStory: payload.key }
   },

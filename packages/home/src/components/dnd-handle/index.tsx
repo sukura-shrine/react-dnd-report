@@ -10,6 +10,7 @@ export interface DnDHandleProps {
   showHandle?: boolean
   position?: { x: number, y: number }
   children?: React.ReactNode
+  onClose?: () => void
   onStop?: DraggableEventHandler
 }
 
@@ -23,7 +24,7 @@ export default function DnDHandle (props: DnDHandleProps) {
   const handle = (
     <div className="dnd-tools">
       {fixed ? null : <DragOutlined className="dnd-handle" />}
-      <CloseOutlined />
+      <CloseOutlined onClick={props.onClose}/>
     </div>
   )
 

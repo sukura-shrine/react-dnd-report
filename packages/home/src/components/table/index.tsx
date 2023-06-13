@@ -48,6 +48,13 @@ const Table:React.FC<TableBodyProps> = (props) => {
     })
   }
 
+  const onClose = () => {
+    globalDispatch({
+      type: 'delItem',
+      payload: { cid: props.cid }
+    })
+  }
+
   const onStop = (event: any, data: { x: number, y: number }) => {
     const { x, y } = data
     dispatch({
@@ -69,7 +76,7 @@ const Table:React.FC<TableBodyProps> = (props) => {
 
   return (
     <RulerContext.Provider value={{ state, dispatch }}>
-      <DnDHandle fixed={fixed} showHandle={showHandle} position={position} onStop={onStop}>
+      <DnDHandle fixed={fixed} showHandle={showHandle} position={position} onClose={onClose} onStop={onStop}>
         <div className='component-table' style={styles} onClick={onClick}>
           <Ruler parentId={props.parentId} importDataInterface={props.importDataInterface}>
             <Body {...props} />
